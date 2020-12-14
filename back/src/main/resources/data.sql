@@ -1,0 +1,12 @@
+INSERT IGNORE INTO model_genre VALUES (1, 'action');
+INSERT IGNORE INTO model_genre VALUES (2, 'drama');
+INSERT IGNORE INTO model_genre VALUES (3, 'comedy');
+INSERT IGNORE INTO model_genre VALUES (4, 'thriller');
+INSERT IGNORE INTO model_genre VALUES (5, 'mystery');
+INSERT IGNORE INTO model_genre VALUES (6, 'sci-fi');
+INSERT IGNORE INTO model_genre VALUES (7, 'horror');
+INSERT IGNORE INTO model_genre VALUES (8, 'romance');
+INSERT IGNORE INTO model_genre VALUES (9, 'cookbook');
+INSERT IGNORE INTO model_genre VALUES (10, 'history');
+INSERT IGNORE INTO model_genre VALUES (11, 'memoir');
+INSERT IGNORE INTO model_genre VALUES (12, 'poetry');

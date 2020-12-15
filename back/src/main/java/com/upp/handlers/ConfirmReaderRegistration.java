@@ -1,5 +1,9 @@
 package com.upp.handlers;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
 import com.upp.dtos.PostFormRequest;
 import com.upp.models.User;
 import com.upp.repositories.IUserRepository;
@@ -35,6 +39,13 @@ public class ConfirmReaderRegistration implements JavaDelegate
 
         if ( !user.getActivationCode().equals( code ) )
         {
+
+            Map< String, String > errors = new HashMap< String, String >();
+
+            errors.put( code, code + " is not correct" );
+
+            execution.removeVariable( "errors" );
+            execution.setVariable( "errors", errors );
             execution.setVariable( "codeValid", false );
             return;
         }

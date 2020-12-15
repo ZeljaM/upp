@@ -60,6 +60,10 @@ public class User
     private Set< Genre > genres = new HashSet<>();
 
     @ManyToMany( fetch = FetchType.LAZY )
+    @JoinTable( name = "model_user_beta_genres", joinColumns = @JoinColumn( name = "user_id" ), inverseJoinColumns = @JoinColumn( name = "genre_id" ) )
+    private Set< Genre > betaGenres = new HashSet<>();
+
+    @ManyToMany( fetch = FetchType.LAZY )
     @JoinTable( name = "model_user_roles", joinColumns = @JoinColumn( name = "user_id" ), inverseJoinColumns = @JoinColumn( name = "role_id" ) )
     private Set< Role > roles = new HashSet< Role >();
 

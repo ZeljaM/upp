@@ -30,9 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserRegistrationController
 {
 
-    // // @Autowired
-    // // private IdentityService identityService;
-
     @Autowired
     private TaskService taskService;
 
@@ -66,27 +63,23 @@ public class UserRegistrationController
     public ResponseEntity< FormFields > postTask( @RequestBody PostFormRequest form )
     {
 
-        // // Task currentTask = this.taskService.createTaskQuery().taskId(
-        // // form.getTask() ).singleResult();
-
         final Map< String, Object > map = new HashMap< String, Object >();
 
-        // ! retrieve previous form data
         PostFormRequest posts = ( PostFormRequest ) runtimeService.getVariable( form.getProcess(), "form" );
 
         if ( posts != null )
         {
+            // ! there is already variable
             map.putAll( posts.getFields() );
         }
         else
         {
+            // ! first time sending form
             posts = form;
         }
 
-        // ! merge new and old form data
         for ( Map.Entry< String, String > iterator : form.getFields().entrySet() )
         {
-            // ! the same key -> override value
             map.put( iterator.getKey(), iterator.getValue() );
             posts.getFields().put( iterator.getKey(), iterator.getValue() );
         }
@@ -98,7 +91,7 @@ public class UserRegistrationController
 
         if ( tasks.size() == 0 )
         {
-            // if there is no tasks[0]
+            // ? if there is no tasks[0]
             return new ResponseEntity<>( HttpStatus.CREATED );
         }
 

@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 
+import com.upp.dtos.ApiResponse;
 import com.upp.dtos.FormFields;
 import com.upp.dtos.PostFormRequest;
+import com.upp.repositories.IGenreRepository;
 
 
 import org.camunda.bpm.engine.FormService;
@@ -39,6 +41,9 @@ public class UserRegistrationController
     @Autowired
     private RuntimeService runtimeService;
 
+    @Autowired
+    private IGenreRepository iGenreRepository;
+
     @GetMapping( "/process" )
     public ResponseEntity< FormFields > startProcess()
     {
@@ -60,7 +65,7 @@ public class UserRegistrationController
 
     @SuppressWarnings( "unchecked" )
     @PostMapping( "/task" )
-    public ResponseEntity< FormFields > postTask( @RequestBody PostFormRequest form )
+    public ResponseEntity< ? > postTask( @RequestBody PostFormRequest form )
     {
 
         final Map< String, Object > map = new HashMap< String, Object >();
@@ -92,7 +97,8 @@ public class UserRegistrationController
         if ( tasks.size() == 0 )
         {
             // ? if there is no tasks[0]
-            return new ResponseEntity<>( HttpStatus.CREATED );
+            ApiResponse apiResponse = new ApiResponse( "Successfully signed in!", true );
+            return new ResponseEntity< ApiResponse >( apiResponse, HttpStatus.CREATED );
         }
 
         Task nextTask = tasks.get( 0 );

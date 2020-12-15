@@ -5,8 +5,21 @@ spring:
     url: jdbc:mysql://localhost:3306/db_camunda?createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
     password: 1234
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     initialization-mode: always
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: mail.ws.xml.rs@gmail.com
+    password: 7ADAVh1w2uNXsyYGUTvF28yxaPXXey
+    protocol: smtp
+    tls: true
+    properties.mail.smtp:
+        auth: true
+        starttls.enable: true
+        ssl.trust: smtp.gmail.com
+
   jpa:
     hibernate:
       ddl-auto: update

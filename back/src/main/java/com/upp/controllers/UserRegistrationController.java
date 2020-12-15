@@ -3,11 +3,13 @@ package com.upp.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 import com.upp.dtos.ApiResponse;
 import com.upp.dtos.FormFields;
 import com.upp.dtos.PostFormRequest;
+import com.upp.models.Genre;
 import com.upp.repositories.IGenreRepository;
 
 
@@ -51,6 +53,11 @@ public class UserRegistrationController
         ProcessInstance instance = runtimeService.startProcessInstanceByKey( "register_user" );
 
         Task firstTask = this.taskService.createTaskQuery().processInstanceId( instance.getId() ).list().get( 0 );
+
+        List< Genre > allGenres = this.iGenreRepository.findAll();
+        String defaultValuesForGenres = allGenres.stream().map( g -> g.getName() ).collect( Collectors.joining( ";" ) );
+        // ~ set this as variable, and use it inside model with expression
+        this.runtimeService.setVariable( instance.getId(), "defaultValues", defaultValuesForGenres );
 
         TaskFormData taskFormData = this.formService.getTaskFormData( firstTask.getId() );
 

@@ -49,9 +49,11 @@ public class UserRegistrationController
 
         TaskFormData taskFormData = this.formService.getTaskFormData( firstTask.getId() );
 
+        String formKey = taskFormData.getFormKey();
+
         List< FormField > formFields = taskFormData.getFormFields();
 
-        FormFields returnFormFields = new FormFields( firstTask.getId(), instance.getId(), formFields );
+        FormFields returnFormFields = new FormFields( firstTask.getId(), instance.getId(), formFields, new HashMap< String, String >(), formKey );
 
         return new ResponseEntity< FormFields >( returnFormFields, HttpStatus.OK );
 
@@ -62,6 +64,10 @@ public class UserRegistrationController
     @PostMapping( "/task" )
     public ResponseEntity< FormFields > postTask( @RequestBody PostFormRequest form )
     {
+
+        ProcessInstance instance = runtimeService.startProcessInstanceByKey( "register_user" );
+
+        Task task = this.taskService.createTaskQuery().processInstanceId( instance.getId() ).list().get( 0 );
 
         final Map< String, Object > map = new HashMap< String, Object >();
 
@@ -98,10 +104,11 @@ public class UserRegistrationController
         Task nextTask = tasks.get( 0 );
 
         TaskFormData taskFormData = this.formService.getTaskFormData( nextTask.getId() );
+        String formKey = taskFormData.getFormKey();
         List< FormField > formFields = taskFormData.getFormFields();
 
         HashMap< String, String > errors = ( HashMap< String, String > ) runtimeService.getVariable( form.getProcess(), "errors" );
-        FormFields returnFormFields = new FormFields( nextTask.getId(), form.getProcess(), formFields, errors );
+        FormFields returnFormFields = new FormFields( nextTask.getId(), form.getProcess(), formFields, errors, formKey );
 
         return new ResponseEntity< FormFields >( returnFormFields, HttpStatus.OK );
 

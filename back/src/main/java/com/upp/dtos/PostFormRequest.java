@@ -20,6 +20,8 @@ public class PostFormRequest implements Serializable
      */
     private static final long serialVersionUID = 1067335988682230059L;
 
+    private String formKey;
+
     private String task;
 
     private String process;

@@ -17,6 +17,8 @@ import lombok.NoArgsConstructor;
 public class FormFields
 {
 
+    private String formDataKey;
+
     private String task;
 
     private String process;
@@ -25,12 +27,13 @@ public class FormFields
 
     private HashMap< String, String > errors;
 
-    public FormFields( String task, String process, List< FormField > fields )
+    public FormFields( String task, String process, List< FormField > fields, HashMap< String, String > errors, String key )
     {
         this.task = task;
         this.process = process;
         this.fields = fields;
-        this.errors = new HashMap<>();
+        this.errors = errors;
+        this.formDataKey = key;
 
     }
 

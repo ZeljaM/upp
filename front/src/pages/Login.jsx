@@ -6,7 +6,7 @@ import { Container } from '../components/styledForm';
 import Login from '../forms/login';
 import NavBar from '../components/NavBar';
 
-import { post } from '../services/api';
+import { Post } from '../services/api';
 import { LOGIN_URL } from '../constants/url';
 import { responseOk } from '../utils/responseOk';
 
@@ -23,7 +23,8 @@ const LoginContainer = () => {
   console.log('logg')
 
   const onFinish = async values => {
-    const response = await post(LOGIN_URL, values);
+    console.log(values)
+    const response = await Post(LOGIN_URL, values);
 
     if (responseOk(response)) {
       const result = await response.json();

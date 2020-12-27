@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
-import { Link } from 'react-router-dom';
+import { Form, Input, Button, Checkbox, Select } from 'antd';
+import isEmpty from 'lodash/isEmpty';
 
 import { FormContainer } from '../components/styledForm';
 
@@ -13,7 +13,7 @@ const layout = {
   },
 };
 
-const Registration = ({ onFinish = () => { }, form, fields }) => {
+const Registration = ({ onFinish = () => { }, form, fields, responseData }) => {
   const checkboxField = (value) => {
     console.log(value);
     form.setFields([
@@ -23,9 +23,18 @@ const Registration = ({ onFinish = () => { }, form, fields }) => {
       },
     ])
   }
-
   
   React.useEffect(() => {
+    console.log('responseData', responseData);
+    if(!isEmpty(responseData.errors))
+      Object.keys(responseData.errors).map(key => (
+        form.setFields([
+          {
+            name: key,
+            errors: ["The field already exists"],
+          },
+        ])
+      ));
     form.setFields([
       {
         name: 'beta',
@@ -52,7 +61,7 @@ const Registration = ({ onFinish = () => { }, form, fields }) => {
             label={field.label} 
             name={field.id}
             rules={[
-              field.typeName !== 'boolean' && {
+              {
                 required: 'required' in field.properties,
                 message: `Please input ${field.id}`,
               },
@@ -69,7 +78,14 @@ const Registration = ({ onFinish = () => { }, form, fields }) => {
               },
             ]}
             >
-              {'password' in field.properties ? <Input.Password /> : field.typeName === 'boolean' ? <Checkbox onChange={(e) => checkboxField(e.target.checked)}/> : <Input />}
+              {'password' in field.properties ? <Input.Password /> : field.typeName === 'boolean' ? <Checkbox onChange={(e) => checkboxField(e.target.checked)}/> : field.defaultValue ? 
+                <Select>
+                  {field.defaultValue.split(";").map(value => (
+                    <Select.Option value={value} key={value}>
+                      {value}
+                    </Select.Option>
+                  ))}  
+                </Select> : <Input />}
             </Form.Item>
           );
         })}

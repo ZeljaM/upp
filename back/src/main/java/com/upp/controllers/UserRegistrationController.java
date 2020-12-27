@@ -70,6 +70,7 @@ public class UserRegistrationController
         String defaultValuesForGenres = allGenres.stream().map( g -> g.getName() ).collect( Collectors.joining( ";" ) );
 
         this.runtimeService.setVariable( instance.getId(), "defaultValues", defaultValuesForGenres );
+        this.runtimeService.setVariable( instance.getId(), "completed", false );
 
         TaskFormData taskFormData = this.formService.getTaskFormData( firstTask.getId() );
 
@@ -143,7 +144,7 @@ public class UserRegistrationController
         }
         else
         {
-            Boolean finished = finished = ( Boolean ) runtimeService.getVariable( form.getProcess(), "dataValid" );
+            Boolean finished = finished = ( Boolean ) runtimeService.getVariable( form.getProcess(), "completed" );
             if ( finished )
             {
                 ApiResponse apiResponse = new ApiResponse( "Verify account by email!", true );

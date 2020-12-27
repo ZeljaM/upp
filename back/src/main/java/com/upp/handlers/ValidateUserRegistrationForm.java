@@ -85,50 +85,6 @@ public class ValidateUserRegistrationForm implements JavaDelegate
                 Map< String, String > properties = ff.getProperties();
                 List< FormFieldValidationConstraint > validationConstraints = ff.getValidationConstraints();
 
-                // validationConstraints.forEach( vc ->
-                // {
-
-                // if ( vc.getName().equals( ValidateUserRegistrationForm.REQUIRED ) &&
-                // value.equals( null ) )
-                // {
-                // errors.put( ff.getId(), ff.getId() + " is required" );
-                // }
-                // else if ( vc.getName().equals( ValidateUserRegistrationForm.MINLENGTH )
-                // && ( ( String ) ff.getValue().getValue() ).length() < Integer.parseInt(
-                // vc.getConfiguration().toString() ) )
-                // {
-                // errors.put( ff.getId(), ff.getId() + " minimum length is " +
-                // vc.getConfiguration().toString() );
-
-                // }
-                // else if ( vc.getName().equals( ValidateUserRegistrationForm.MAXLENGTH )
-                // && ( ( String ) ff.getValue().getValue() ).length() > Integer.parseInt(
-                // vc.getConfiguration().toString() ) )
-                // {
-                // errors.put( ff.getId(), ff.getId() + " maximum length is " +
-                // vc.getConfiguration().toString() );
-
-                // }
-
-                // else if ( vc.getName().equals( ValidateUserRegistrationForm.MIN )
-                // && ( Long ) ff.getValue().getValue() < Long.parseLong(
-                // vc.getConfiguration().toString() ) )
-                // {
-                // errors.put( ff.getId(), ff.getId() + " minimum value is " +
-                // vc.getConfiguration().toString() );
-
-                // }
-                // else if ( vc.getName().equals( ValidateUserRegistrationForm.MAX )
-                // && ( Long ) ff.getValue().getValue() > Long.parseLong(
-                // vc.getConfiguration().toString() ) )
-                // {
-                // errors.put( ff.getId(), ff.getId() + " minimum value is " +
-                // vc.getConfiguration().toString() );
-
-                // }
-
-                // } );
-
                 properties.forEach( ( k, v ) ->
                 {
                     if ( k.equals( ValidateUserRegistrationForm.USERNAME ) )
@@ -188,10 +144,11 @@ public class ValidateUserRegistrationForm implements JavaDelegate
 
         } );
 
+        execution.setVariable( "dataValid", errors.isEmpty() );
+
         execution.removeVariable( "errors" );
         execution.setVariable( "errors", errors );
 
-        execution.setVariable( "dataValid", errors.isEmpty() );
         if ( errors.isEmpty() )
         {
             List< FormField > formFields = taskFormData.getFormFields();
@@ -201,6 +158,18 @@ public class ValidateUserRegistrationForm implements JavaDelegate
             User newUser = new User( collect );
             newUser.setPassword( this.passwordEncoder.encode( newUser.getPassword() ) );
             this.iUserRepository.save( newUser );
+            // TODO add genres
+
+            if ( newUser.getBeta() )
+            {
+                execution.setVariable( "beta", newUser.getBeta() );
+            }
+            else
+            {
+                execution.setVariable( "completed", true );
+
+            }
+
         }
 
     }

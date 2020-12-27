@@ -1,5 +1,8 @@
 package com.upp.security.dtos;
 
+import com.upp.models.RoleName;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,9 +17,12 @@ public class JwtAuthenticationResponse
 
     private String tokenType = "Bearer";
 
-    public JwtAuthenticationResponse( String token )
+    private RoleName role;
+
+    public JwtAuthenticationResponse( String token, RoleName role )
     {
         this.accessToken = token;
+        this.role = role;
 
     }
 

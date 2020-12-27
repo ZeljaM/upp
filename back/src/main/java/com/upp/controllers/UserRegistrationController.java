@@ -37,10 +37,6 @@ import org.springframework.web.client.RestTemplate;
 public class UserRegistrationController
 {
 
-    // TODO
-    // kada treba verifikacija, stigne mu mej, kada klikne na mejl, odradi get
-    // zahtev, a mi na tom endpointu posaljemo resttemplate-om, popunjenu formu
-
     // TODO Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 
     @Autowired

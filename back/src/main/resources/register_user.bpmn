@@ -106,6 +106,7 @@
           <camunda:formField id="genresBeta" label="genres" type="string" defaultValue="action;drama;comedy;thriller;mystery;sci-fi;horror;romance;cookbook;history;memoir;poetry">
             <camunda:properties>
               <camunda:property id="genres" />
+              <camunda:property id="REQUIRED" />
             </camunda:properties>
           </camunda:formField>
         </camunda:formData>
@@ -174,6 +175,11 @@
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="register_user">
+      <bpmndi:BPMNEdge id="Flow_1v2eej0_di" bpmnElement="Flow_1v2eej0">
+        <di:waypoint x="970" y="460" />
+        <di:waypoint x="990" y="460" />
+        <di:waypoint x="990" y="302" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0468q8r_di" bpmnElement="Flow_0468q8r">
         <di:waypoint x="1590" y="740" />
         <di:waypoint x="1590" y="762" />
@@ -251,11 +257,6 @@
       <bpmndi:BPMNEdge id="Flow_01lm69j_di" bpmnElement="Flow_01lm69j">
         <di:waypoint x="188" y="277" />
         <di:waypoint x="330" y="277" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1v2eej0_di" bpmnElement="Flow_1v2eej0">
-        <di:waypoint x="970" y="460" />
-        <di:waypoint x="990" y="460" />
-        <di:waypoint x="990" y="302" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="152" y="259" width="36" height="36" />

@@ -40,7 +40,6 @@ public class SendConfirmationMailUser implements JavaDelegate
         String activationCode = RandomStringUtils.randomAlphanumeric( 10 );
 
         User user = this.iUserRepository.findByEmail( email ).get();
-        user.setActivationCode( activationCode );
 
         // FIXME replace this please!
         String text = "http://localhost:8081/register/user/verify/" + execution.getProcessInstanceId() + "/" + currentTask.getId();

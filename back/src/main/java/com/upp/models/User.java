@@ -50,8 +50,6 @@ public class User
 
     private String lastName;
 
-    private String activationCode;
-
     // ! not like alpha and beta male :D
     private Boolean beta;
 

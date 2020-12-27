@@ -10,14 +10,14 @@ const resolveHeaders = (authToken) =>
     : { ...headers };
 
 // Used for post, put, patch, get data
-const get = (url, authToken = '', options = {}) =>
+const Get = (url, authToken = '', options = {}) =>
   fetch(url, {
     method: 'GET',
     headers: resolveHeaders(authToken),
     ...options,
   });
 
-const post = (url, data = {}, authToken = '', options = {}) => {
+const Post = (url, data = {}, authToken = '', options = {}) => {
   return fetch(url, {
     method: 'POST',
     headers: resolveHeaders(authToken),
@@ -26,7 +26,7 @@ const post = (url, data = {}, authToken = '', options = {}) => {
   });
 };
 
-const patch = (url, data = {}, authToken = '', options = {}) => {
+const Patch = (url, data = {}, authToken = '', options = {}) => {
   return fetch(url, {
     method: 'PATCH',
     headers: resolveHeaders(authToken),
@@ -35,7 +35,7 @@ const patch = (url, data = {}, authToken = '', options = {}) => {
   });
 };
 
-const put = (url, data = {}, authToken = '', options = {}) => {
+const Put = (url, data = {}, authToken = '', options = {}) => {
   return fetch(url, {
     method: 'PUT',
     headers: resolveHeaders(authToken),
@@ -44,4 +44,4 @@ const put = (url, data = {}, authToken = '', options = {}) => {
   });
 };
 
-export { get, post, patch, put };
+export { Get, Post, Patch, Put };

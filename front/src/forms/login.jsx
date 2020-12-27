@@ -56,7 +56,7 @@ const Login = ({ onFinish = () => { }, form }) => {
           Login
         </Button>
         <div className="register-text">If you not have an account</div>
-        <Link to="/register"><div className="register">Register now!</div></Link>
+        <Link to="/registration"><div className="registration">Register now!</div></Link>
       </Form>
     </FormContainer>
   );

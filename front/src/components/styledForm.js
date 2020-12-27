@@ -17,6 +17,7 @@ export const Container = styled.div`
 `;
 
 export const FormContainer = styled.div`
+  min-width: 350px;
   border-radius: 15px;
   padding: 20px;
   background: #ffffff;

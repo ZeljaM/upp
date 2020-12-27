@@ -10,7 +10,7 @@ class Navbar extends React.PureComponent {
                 </h1>
                 <ul>
                     {localStorage.getItem('access_token') === null ? <li><a href="/login">Login</a></li> : null}
-                    <li><a href="/registration">Registration</a></li>
+                    {localStorage.getItem('access_token') === null ? <li><a href="/registration">Registration</a></li> : null}
                     {localStorage.getItem('access_token') !== null ? <li><a href="/login" onClick={() => localStorage.clear()}>Logout</a></li> : null}
                 </ul>
             </nav>

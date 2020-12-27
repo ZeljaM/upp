@@ -16,11 +16,15 @@ import com.upp.repositories.IUserRepository;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SaveUserHandler implements JavaDelegate
 {
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     private IUserRepository iUserRepository;
@@ -39,6 +43,8 @@ public class SaveUserHandler implements JavaDelegate
         final Role userRole = this.iRoleRepository.findByName( RoleName.ROLE_READER ).orElseThrow( () -> new Exception( "User Role not set." ) );
 
         User newUser = new User( form.getFields() );
+
+        newUser.setPassword( this.passwordEncoder.encode( newUser.getPassword() ) );
 
         newUser.setRoles( Collections.singleton( userRole ) );
 

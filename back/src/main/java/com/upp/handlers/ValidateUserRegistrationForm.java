@@ -6,7 +6,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
+import com.upp.models.Role;
+import com.upp.models.RoleName;
 import com.upp.models.User;
+import com.upp.repositories.IRoleRepository;
 import com.upp.repositories.IUserRepository;
 
 
@@ -46,6 +49,9 @@ public class ValidateUserRegistrationForm implements JavaDelegate
 
     @Autowired
     private IUserRepository iUserRepository;
+
+    @Autowired
+    private IRoleRepository iRoleRepository;
 
     private static final String REQUIRED = "required";
 
@@ -157,7 +163,20 @@ public class ValidateUserRegistrationForm implements JavaDelegate
 
             User newUser = new User( collect );
             newUser.setPassword( this.passwordEncoder.encode( newUser.getPassword() ) );
+
+            Role readerRole = this.iRoleRepository.findByName( RoleName.ROLE_READER ).get();
+
+            newUser.getRoles().add( readerRole );
+
+            if ( newUser.getBeta() )
+            {
+                Role beta = this.iRoleRepository.findByName( RoleName.ROLE_BETA ).get();
+                newUser.getRoles().add( beta );
+
+            }
+
             this.iUserRepository.save( newUser );
+
             // TODO add genres
 
             if ( newUser.getBeta() )

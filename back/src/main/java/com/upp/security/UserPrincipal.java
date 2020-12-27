@@ -44,10 +44,12 @@ public class UserPrincipal implements UserDetails
 
     private Boolean beta;
 
+    private Boolean active;
+
     private Collection< ? extends GrantedAuthority > authorities;
 
     public UserPrincipal( Long id, String email, String username, String password, String city, String country, String firstName, String lastName, Boolean beta,
-            Collection< ? extends GrantedAuthority > authorities )
+            Collection< ? extends GrantedAuthority > authorities, Boolean active )
     {
         super();
         this.id = id;
@@ -60,6 +62,7 @@ public class UserPrincipal implements UserDetails
         this.lastName = lastName;
         this.beta = beta;
         this.authorities = authorities;
+        this.active = active;
 
     }
 
@@ -70,7 +73,7 @@ public class UserPrincipal implements UserDetails
                 user.getRoles().stream().map( role -> new SimpleGrantedAuthority( role.getName().name() ) ).collect( Collectors.toList() );
 
         return new UserPrincipal( user.getId(), user.getEmail(), user.getUsername(), user.getPassword(), user.getCity(), user.getCountry(), user.getFirstName(),
-                user.getLastName(), user.getBeta(), authorities );
+                user.getLastName(), user.getBeta(), authorities, user.getActive() );
 
     }
 
@@ -133,7 +136,7 @@ public class UserPrincipal implements UserDetails
     public boolean isEnabled()
     {
 
-        return true;
+        return this.active;
 
     }
 

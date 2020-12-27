@@ -22,6 +22,7 @@ import org.camunda.bpm.engine.form.FormType;
 import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,6 +40,9 @@ public class ValidateUserRegistrationForm implements JavaDelegate
 
     @Autowired
     private RuntimeService runtimeService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     private IUserRepository iUserRepository;
@@ -195,6 +199,7 @@ public class ValidateUserRegistrationForm implements JavaDelegate
             Map< String, String > collect = formFields.stream().collect( Collectors.toMap( FormField::getId, i -> i.getValue().getValue().toString() ) );
 
             User newUser = new User( collect );
+            newUser.setPassword( this.passwordEncoder.encode( newUser.getPassword() ) );
             this.iUserRepository.save( newUser );
         }
 

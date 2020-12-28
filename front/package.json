@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack serve --progress --profile --watch --content-base src/ --http --hot --port 3000",
+    "start": "webpack serve --progress --profile --watch --content-base src/ --https --hot --port 3000",
     "build": "webpack"
   },
   "keywords": [],

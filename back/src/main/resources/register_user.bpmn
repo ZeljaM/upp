@@ -145,11 +145,11 @@
     <bpmn:boundaryEvent id="Event_0qgm7xk" attachedToRef="Activity_0y31qlg">
       <bpmn:outgoing>Flow_1x2zn4i</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_16diy93">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P30D</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1M</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_1x2zn4i" sourceRef="Event_0qgm7xk" targetRef="Activity_05p0da5" />
-    <bpmn:serviceTask id="Activity_05p0da5" name="Send email for cancelation of registration" camunda:class="com.upp.handlers.CancelReaderRegistration">
+    <bpmn:serviceTask id="Activity_05p0da5" name="Send email for cancelation of registration" camunda:asyncAfter="true" camunda:class="com.upp.handlers.CancelReaderRegistration">
       <bpmn:incoming>Flow_1x2zn4i</bpmn:incoming>
       <bpmn:outgoing>Flow_0aseghd</bpmn:outgoing>
     </bpmn:serviceTask>

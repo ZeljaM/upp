@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 
+import com.upp.models.RoleName;
 import com.upp.models.User;
 
 
@@ -25,5 +26,7 @@ public interface IUserRepository extends JpaRepository< User, Long >
     Optional< User > findByEmail( String email );
 
     List< User > findByIdIn( List< Long > userIds );
+
+    List< User > findByRolesName( RoleName name );
 
 }

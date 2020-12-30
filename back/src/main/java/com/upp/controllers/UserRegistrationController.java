@@ -6,12 +6,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
+import com.upp.configuration.UrlStorage;
 import com.upp.dtos.ApiResponse;
 import com.upp.dtos.FormFields;
 import com.upp.dtos.PostFormRequest;
 import com.upp.models.Genre;
 import com.upp.repositories.IGenreRepository;
-import com.upp.repositories.IUserRepository;
 
 
 import org.camunda.bpm.engine.FormService;
@@ -51,9 +51,6 @@ public class UserRegistrationController
     @Autowired
     private IGenreRepository iGenreRepository;
 
-    @Autowired
-    private IUserRepository iUserRepository;
-
     @GetMapping( "/process" )
     public ResponseEntity< FormFields > startProcess()
     {
@@ -74,7 +71,8 @@ public class UserRegistrationController
 
         List< FormField > formFields = taskFormData.getFormFields();
 
-        FormFields returnFormFields = new FormFields( firstTask.getId(), instance.getId(), formFields, new HashMap< String, String >(), formKey );
+        FormFields returnFormFields = new FormFields( firstTask.getId(), instance.getId(), formFields, new HashMap< String, String >(), formKey,
+                UrlStorage.HOST + UrlStorage.POST_READER );
 
         return new ResponseEntity< FormFields >( returnFormFields, HttpStatus.OK );
 
@@ -106,28 +104,12 @@ public class UserRegistrationController
     public ResponseEntity< ? > postTask( @RequestBody PostFormRequest form )
     {
 
-        Task task = taskService.createTaskQuery().processInstanceId( form.getProcess() ).singleResult();
         final Map< String, Object > map = new HashMap< String, Object >();
-
-        PostFormRequest posts = ( PostFormRequest ) runtimeService.getVariable( form.getProcess(), "form" );
-
-        if ( posts != null )
-        {
-            // ! there is already variable
-            map.putAll( posts.getFields() );
-        }
-        else
-        {
-            // ! first time sending form
-            posts = form;
-        }
 
         for ( Map.Entry< String, String > iterator : form.getFields().entrySet() )
         {
             map.put( iterator.getKey(), iterator.getValue() );
-            posts.getFields().put( iterator.getKey(), iterator.getValue() );
         }
-        this.runtimeService.setVariable( form.getProcess(), "form", posts );
 
         this.formService.submitTaskForm( form.getTask(), map );
 
@@ -140,7 +122,7 @@ public class UserRegistrationController
         }
         else
         {
-            Boolean finished = finished = ( Boolean ) runtimeService.getVariable( form.getProcess(), "completed" );
+            Boolean finished = ( Boolean ) runtimeService.getVariable( form.getProcess(), "completed" );
             if ( finished )
             {
                 ApiResponse apiResponse = new ApiResponse( "Verify account by email!", true );
@@ -157,7 +139,8 @@ public class UserRegistrationController
         List< FormField > formFields = taskFormData.getFormFields();
 
         HashMap< String, String > errors = ( HashMap< String, String > ) runtimeService.getVariable( form.getProcess(), "errors" );
-        FormFields returnFormFields = new FormFields( nextTask.getId(), form.getProcess(), formFields, errors, formKey );
+        FormFields returnFormFields =
+                new FormFields( nextTask.getId(), form.getProcess(), formFields, errors, formKey, UrlStorage.HOST + UrlStorage.POST_READER );
 
         return new ResponseEntity< FormFields >( returnFormFields, HttpStatus.OK );
 

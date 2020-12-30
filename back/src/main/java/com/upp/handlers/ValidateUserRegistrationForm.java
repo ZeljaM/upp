@@ -3,25 +3,24 @@ package com.upp.handlers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
+import com.upp.models.Genre;
 import com.upp.models.Role;
 import com.upp.models.RoleName;
 import com.upp.models.User;
+import com.upp.repositories.IGenreRepository;
 import com.upp.repositories.IRoleRepository;
 import com.upp.repositories.IUserRepository;
 
 
 import org.camunda.bpm.engine.FormService;
-import org.camunda.bpm.engine.IdentityService;
-import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.form.FormField;
-import org.camunda.bpm.engine.form.FormFieldValidationConstraint;
-import org.camunda.bpm.engine.form.FormType;
 import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,22 +32,19 @@ public class ValidateUserRegistrationForm implements JavaDelegate
 {
 
     @Autowired
-    private IdentityService identityService;
-
-    @Autowired
     private TaskService taskService;
 
     @Autowired
     private FormService formService;
 
     @Autowired
-    private RuntimeService runtimeService;
-
-    @Autowired
     PasswordEncoder passwordEncoder;
 
     @Autowired
     private IUserRepository iUserRepository;
+
+    @Autowired
+    private IGenreRepository iGenreRepository;
 
     @Autowired
     private IRoleRepository iRoleRepository;
@@ -63,11 +59,7 @@ public class ValidateUserRegistrationForm implements JavaDelegate
 
     private static final String MAX = "max";
 
-    private static final String UNIQUE = "unique";
-
     private static final String USERNAME = "username";
-
-    private static final String PASSWORD = "password";
 
     private static final String EMAIL = "email";
 
@@ -82,14 +74,12 @@ public class ValidateUserRegistrationForm implements JavaDelegate
 
         taskFormData.getFormFields().forEach( ff ->
         {
-            FormType type = ff.getType();
             try
             {
 
                 Object value = ff.getValue().getValue();
 
                 Map< String, String > properties = ff.getProperties();
-                List< FormFieldValidationConstraint > validationConstraints = ff.getValidationConstraints();
 
                 properties.forEach( ( k, v ) ->
                 {
@@ -145,9 +135,6 @@ public class ValidateUserRegistrationForm implements JavaDelegate
                 errors.put( ff.getId(), "Cant find value!" );
             }
 
-            // TypedValue value = ff.getValue();
-            // value.getValue().getClass();
-
         } );
 
         execution.setVariable( "dataValid", errors.isEmpty() );
@@ -175,9 +162,19 @@ public class ValidateUserRegistrationForm implements JavaDelegate
 
             }
 
-            this.iUserRepository.save( newUser );
+            String genres = ( String ) execution.getVariable( "genres" );
+            String[] split = genres.split( ";" );
 
-            // TODO add genres
+            for ( String s : split )
+            {
+                Optional< Genre > findByName = this.iGenreRepository.findByName( s );
+                if ( findByName.isPresent() )
+                {
+                    newUser.getGenres().add( findByName.get() );
+                }
+            }
+
+            this.iUserRepository.save( newUser );
 
             if ( newUser.getBeta() )
             {

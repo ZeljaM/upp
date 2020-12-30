@@ -1,9 +1,5 @@
 package com.upp.handlers;
 
-import java.util.Optional;
-
-
-import com.upp.models.User;
 import com.upp.repositories.IUserRepository;
 import com.upp.services.EmailService;
 
@@ -30,14 +26,6 @@ public class CancelReaderRegistration implements JavaDelegate
         System.err.println( "CANCEL" );
 
         String email = ( String ) execution.getVariable( "email" );
-
-        Optional< User > findByEmail = this.iUserService.findByEmail( email );
-        if ( findByEmail.isPresent() )
-        {
-            this.iUserService.delete( findByEmail.get() );
-        }
-
-        EmailService.sendMessage( email, "Registration is expired", "Registration is expired" );
 
     }
 

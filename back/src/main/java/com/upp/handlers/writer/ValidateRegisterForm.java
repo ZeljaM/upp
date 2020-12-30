@@ -14,14 +14,10 @@ import com.upp.repositories.IUserRepository;
 
 
 import org.camunda.bpm.engine.FormService;
-import org.camunda.bpm.engine.IdentityService;
-import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.form.FormField;
-import org.camunda.bpm.engine.form.FormFieldValidationConstraint;
-import org.camunda.bpm.engine.form.FormType;
 import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +29,10 @@ public class ValidateRegisterForm implements JavaDelegate
 {
 
     @Autowired
-    private IdentityService identityService;
-
-    @Autowired
     private TaskService taskService;
 
     @Autowired
     private FormService formService;
-
-    @Autowired
-    private RuntimeService runtimeService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -63,11 +53,7 @@ public class ValidateRegisterForm implements JavaDelegate
 
     private static final String MAX = "max";
 
-    private static final String UNIQUE = "unique";
-
     private static final String USERNAME = "username";
-
-    private static final String PASSWORD = "password";
 
     private static final String EMAIL = "email";
 
@@ -82,14 +68,12 @@ public class ValidateRegisterForm implements JavaDelegate
 
         taskFormData.getFormFields().forEach( ff ->
         {
-            FormType type = ff.getType();
             try
             {
 
                 Object value = ff.getValue().getValue();
 
                 Map< String, String > properties = ff.getProperties();
-                List< FormFieldValidationConstraint > validationConstraints = ff.getValidationConstraints();
 
                 properties.forEach( ( k, v ) ->
                 {
@@ -155,17 +139,23 @@ public class ValidateRegisterForm implements JavaDelegate
 
             User newUser = new User( collect );
 
-            Role writerRole = this.iRoleRepository.findByName( RoleName.ROLE_WRITER ).get();
+            newUser.setPassword( this.passwordEncoder.encode( newUser.getPassword() ) );
+
+            Role writerRole = this.iRoleRepository.findByName( RoleName.ROLE_WRITERUNCOMPLETE ).get();
 
             newUser.getRoles().add( writerRole );
 
             User save = this.iUserRepository.save( newUser );
+            execution.setVariable( "userId", save.getId().toString() );
 
             // currentTask.setAssignee( save.getId().toString( i ) );
 
         }
 
         execution.setVariable( "dataValid", errors.isEmpty() );
+
+        execution.removeVariable( "errors" );
+        execution.setVariable( "errors", errors );
 
     }
 

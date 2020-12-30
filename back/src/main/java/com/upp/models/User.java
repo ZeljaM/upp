@@ -1,5 +1,6 @@
 package com.upp.models;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -51,6 +52,9 @@ public class User
     private String lastName;
 
     // ! not like alpha and beta male :D
+
+    private LocalDateTime createdAt;
+
     private Boolean beta;
 
     @ManyToMany( fetch = FetchType.LAZY )
@@ -78,6 +82,7 @@ public class User
         this.lastName = map.get( "lastname" );
         this.beta = Boolean.parseBoolean( map.get( "beta" ) );
         this.active = false;
+        this.createdAt = LocalDateTime.now();
 
     }
 

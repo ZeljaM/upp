@@ -17,6 +17,9 @@ INSERT IGNORE INTO model_roles VALUES(3, 'ROLE_WRITER');
 INSERT IGNORE INTO model_roles VALUES(4, 'ROLE_EDITOR');
 INSERT IGNORE INTO model_roles VALUES(5, 'ROLE_MODERATOR');
 INSERT IGNORE INTO model_roles VALUES(6, 'ROLE_LECTOR');
+INSERT IGNORE INTO model_roles VALUES(7, 'ROLE_WRITERUNCOMPLETE');
+
+
 
 INSERT IGNORE `model_user`
 (`id`,`active`,`beta`,`city`,`country`,`email`,`first_name`,`last_name`,`password`,`username`)

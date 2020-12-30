@@ -27,13 +27,16 @@ public class FormFields
 
     private HashMap< String, String > errors;
 
-    public FormFields( String task, String process, List< FormField > fields, HashMap< String, String > errors, String key )
+    private String url;
+
+    public FormFields( String task, String process, List< FormField > fields, HashMap< String, String > errors, String key, String url )
     {
         this.task = task;
         this.process = process;
         this.fields = fields;
         this.errors = errors;
         this.formDataKey = key;
+        this.url = url;
 
     }
 

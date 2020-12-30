@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DummyTask implements JavaDelegate
+public class DummyTaskAgain implements JavaDelegate
 {
 
     @Override

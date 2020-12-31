@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, Checkbox, Select } from 'antd';
+import { Form, Input, Button, Checkbox, Select, Spin } from 'antd';
 import isEmpty from 'lodash/isEmpty';
 
 import { FormContainer } from '../components/styledForm';
@@ -13,7 +13,7 @@ const layout = {
   },
 };
 
-const Registration = ({ onFinish = () => { }, form, fields, responseData }) => {
+const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoading }) => {
   const checkboxField = (value) => {
     console.log(value);
     form.setFields([
@@ -23,6 +23,17 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData }) => {
       },
     ])
   }
+
+  // const multiSelect = (name, value) => {
+  //   console.log('values', value)
+  //   console.log(form);
+  //   form.setFields([
+  //     {
+  //       name,
+  //       value: value.join(';')
+  //     },
+  //   ])
+  // }
   
   React.useEffect(() => {
     console.log('responseData', responseData);
@@ -44,6 +55,7 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData }) => {
   });
 
   return (
+    isLoading ? <Spin size="large"/> :
     <FormContainer>
       <h2 className="title">Registration</h2>
       <Form
@@ -60,7 +72,7 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData }) => {
             <Form.Item 
             label={field.label} 
             name={field.id}
-            rules={[
+            rules={!field.defaultValue ? [
               {
                 required: 'required' in field.properties,
                 message: `Please input ${field.id}`,
@@ -76,12 +88,12 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData }) => {
               'email' in field.properties && {
                 type: 'email',
               },
-            ]}
+            ] : null}
             >
               {'password' in field.properties ? <Input.Password /> : field.typeName === 'boolean' ? <Checkbox onChange={(e) => checkboxField(e.target.checked)}/> : field.defaultValue ? 
-                <Select>
+                <Select mode="multiple" >
                   {field.defaultValue.split(";").map(value => (
-                    <Select.Option value={value} key={value}>
+                    <Select.Option value={value} key={value} >
                       {value}
                     </Select.Option>
                   ))}  

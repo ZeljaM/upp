@@ -8,6 +8,7 @@ import isEmpty from 'lodash/isEmpty';
 import { Container } from '../components/styledForm';
 import Registration from '../forms/DynamicallyRegistration';
 import NavBar from '../components/NavBar';
+import LeftBar from '../components/LeftBar';
 
 import { Post, Get } from '../services/api';
 import { REGISTRATION_START_URL, REGISTRATION_NEXT_URL } from '../constants/url';
@@ -45,13 +46,16 @@ const RegistrationContainer = () => {
 
   const history = useHistory();
 
-  const { data } = useAsync({
+  const { data, isLoading } = useAsync({
     promiseFn: startProcessRegistration,
     api,
     onResolve: (data) => { setFields(get(data, 'fields', [])); setResponseData(data)}
   });
 
   const onFinish = async values => {
+    if(values.genres) values = {...values, genres: values.genres.join(';')}
+    if(values.genresBeta) values = {...values, genresBeta: values.genresBeta.join(';')}
+
     console.log(values);
     const response = await Post(REGISTRATION_NEXT_URL, {formKey: responseData.formDataKey, task: responseData.task, process: responseData.process, fields: values});
 
@@ -92,8 +96,9 @@ const RegistrationContainer = () => {
   };
 
   return <Container>{context}
-            <Registration responseData={responseData} form={form} onFinish={onFinish} fields={fields} />
-            <NavBar />
+            <Registration responseData={responseData} form={form} onFinish={onFinish} fields={fields} isLoading={isLoading} />
+            {/* <NavBar /> */}
+            <LeftBar />
           </Container>;
 };
 

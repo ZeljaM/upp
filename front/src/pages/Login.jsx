@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { Container } from '../components/styledForm';
 import Login from '../forms/login';
 import NavBar from '../components/NavBar';
+import LeftBar from '../components/LeftBar';
 
 import { Post } from '../services/api';
 import { LOGIN_URL } from '../constants/url';
@@ -47,7 +48,8 @@ const LoginContainer = () => {
 
   return <Container>{context}
             <Login form={form} onFinish={onFinish} />
-            <NavBar />
+            {/* <NavBar /> */}
+            <LeftBar />
           </Container>;
 };
 

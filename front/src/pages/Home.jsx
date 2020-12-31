@@ -8,10 +8,10 @@ import {
 import { Switch, Route, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import NavBar from '../components/NavBar';
-
 // import { withAuth } from '../hoc/withAuth';
 
 import './home.css';
+import LeftBar from '../components/LeftBar';
 
 const { Header } = Layout;
 
@@ -66,7 +66,8 @@ const Home = () => {
 
   return (
     <Container>
-      <NavBar />
+      {/* <NavBar /> */}
+      <LeftBar />
     </Container>
   );
 };

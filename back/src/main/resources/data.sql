@@ -1,3 +1,5 @@
+SET GLOBAL max_allowed_packet = 1024*1024*50;
+-- #############################################################################
 INSERT IGNORE INTO model_genre VALUES (1, 'action');
 INSERT IGNORE INTO model_genre VALUES (2, 'drama');
 INSERT IGNORE INTO model_genre VALUES (3, 'comedy');
@@ -24,7 +26,7 @@ INSERT IGNORE INTO model_roles VALUES(7, 'ROLE_WRITERUNCOMPLETE');
 INSERT IGNORE `model_user`
 (`id`,`active`,`beta`,`city`,`country`,`email`,`first_name`,`last_name`,`password`,`username`)
 VALUES
-(1,True,False,'Novi Sad','Srbija','zeljkom96@gmail.com1','moderator','moderator','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','moderator');
+(1,True,False,'Novi Sad','Srbija','moderator@mailinator.com','moderator','moderator','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','moderator');
 
 INSERT IGNORE INTO `model_user_roles`
 (`user_id`,`role_id`)
@@ -35,7 +37,7 @@ VALUES
 INSERT IGNORE `model_user`
 (`id`,`active`,`beta`,`city`,`country`,`email`,`first_name`,`last_name`,`password`,`username`)
 VALUES
-(2,True,False,'Novi Sad','Srbija','zeljkom96@gmail.com2','editor1','editor1','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','editor1');
+(2,True,False,'Novi Sad','Srbija','editor1@mailinator.com','editor1','editor1','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','editor1');
 
 INSERT IGNORE INTO `model_user_roles`
 (`user_id`,`role_id`)
@@ -45,7 +47,7 @@ VALUES
 INSERT IGNORE `model_user`
 (`id`,`active`,`beta`,`city`,`country`,`email`,`first_name`,`last_name`,`password`,`username`)
 VALUES
-(3,True,False,'Novi Sad','Srbija','zeljkom96@gmail.com3','editor2','editor2','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','editor2');
+(3,True,False,'Novi Sad','Srbija','editor1@mailinator.com','editor2','editor2','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','editor2');
 
 INSERT IGNORE INTO `model_user_roles`
 (`user_id`,`role_id`)
@@ -55,7 +57,7 @@ VALUES
 INSERT IGNORE `model_user`
 (`id`,`active`,`beta`,`city`,`country`,`email`,`first_name`,`last_name`,`password`,`username`)
 VALUES
-(4,True,False,'Novi Sad','Srbija','zeljkom96@gmail.com4','lektor','lektor','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','lektor');
+(4,True,False,'Novi Sad','Srbija','lektor@mailinator.com','lektor','lektor','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','lektor');
 
 INSERT IGNORE INTO `model_user_roles`
 (`user_id`,`role_id`)

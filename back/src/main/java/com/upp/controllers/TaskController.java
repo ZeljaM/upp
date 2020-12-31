@@ -3,6 +3,8 @@ package com.upp.controllers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 import com.upp.configuration.UrlStorage;
@@ -28,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,11 +77,16 @@ public class TaskController
     }
 
 
-    @GetMapping( "/form" )
-    public ResponseEntity< ? > form( @RequestBody PostFormRequest form )
+    @PostMapping( "/form" )
+    public ResponseEntity< ? > form( @RequestHeader( required = true, value = "Authorization" ) final String token, @RequestBody PostFormRequest form )
     {
         try
         {
+
+            String userId = ( String ) this.runtimeService.getVariable( form.getProcess(), "userId" );
+
+            long parseLong = Long.parseLong( userId );
+            User user = this.iUserRepository.findById( parseLong ).get();
 
             TaskFormData taskFormData = this.formService.getTaskFormData( form.getTask() );
             String formKey = taskFormData.getFormKey();
@@ -94,6 +102,14 @@ public class TaskController
             }
 
             FormFields returnFormFields = new FormFields( form.getTask(), form.getProcess(), formFields, new HashMap<>(), formKey, url );
+            if ( taskFormData.getFormKey().equals( "voting" ) )
+            {
+
+                List< byte[] > collect = user.getBooks().stream().map( b -> b.getBook() ).collect( Collectors.toList() );
+
+                returnFormFields.setFiles( collect );
+            }
+
             return new ResponseEntity<>( returnFormFields, HttpStatus.OK );
         }
         catch ( Exception e )
@@ -132,6 +148,21 @@ public class TaskController
         }
 
         return new ResponseEntity< List< TaskInfo > >( tasks, HttpStatus.OK );
+
+    }
+
+
+    @PostMapping( "/" )
+    public ResponseEntity< ? > postTask( @RequestBody PostFormRequest form )
+    {
+
+        final Map< String, Object > map = new HashMap< String, Object >();
+
+        map.putAll( form.getFields() );
+
+        this.formService.submitTaskForm( form.getTask(), map );
+
+        return new ResponseEntity< ApiResponse >( new ApiResponse( "Finished task", true ), HttpStatus.OK );
 
     }
 

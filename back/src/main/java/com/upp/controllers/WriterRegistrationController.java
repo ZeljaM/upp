@@ -10,8 +10,10 @@ import com.upp.configuration.UrlStorage;
 import com.upp.dtos.ApiResponse;
 import com.upp.dtos.FormFields;
 import com.upp.dtos.PostFormRequest;
+import com.upp.models.Book;
 import com.upp.models.RoleName;
 import com.upp.models.User;
+import com.upp.repositories.IBookRepository;
 import com.upp.repositories.IUserRepository;
 import com.upp.security.JWTUtil;
 
@@ -56,6 +58,9 @@ public class WriterRegistrationController
 
     @Autowired
     private IUserRepository iUserRepository;
+
+    @Autowired
+    private IBookRepository iBookRepository;
 
     @GetMapping( "/process" )
     public ResponseEntity< FormFields > startProcess()
@@ -152,20 +157,37 @@ public class WriterRegistrationController
     public ResponseEntity< ApiResponse > upload( @RequestParam( "files" ) final MultipartFile[] files,
             @RequestHeader( required = true, value = "Authorization" ) final String token, @RequestParam final String task, @RequestParam final String process )
     {
+
+        Long extractId = this.jwtUtil.extractId( token );
+
+        User user = this.iUserRepository.findById( extractId ).get();
         Task singleResult = this.taskService.createTaskQuery().taskDefinitionKey( task ).singleResult();
         final Map< String, Object > map = new HashMap< String, Object >();
 
         int length = files.length;
-        this.runtimeService.setVariable( process, "filesLength", length );
-        Integer index = 1;
+        this.runtimeService.setVariable( process, "filesMultiPart", files );
 
-        for ( MultipartFile mf : files )
+        try
         {
-            map.put( "file_" + index++, mf );
+            for ( MultipartFile file : files )
+            {
+                Book newBook = new Book();
+
+                newBook.setBook( file.getBytes() );
+                this.iBookRepository.save( newBook );
+
+                user.getBooks().add( newBook );
+
+            }
+
+            this.iUserRepository.save( user );
+        }
+        catch ( Exception e )
+        {
+            System.err.println( e.toString() );
         }
 
-        this.formService.submitTaskForm( task, map );
-
+        this.formService.submitTaskForm( task, null );
         return new ResponseEntity< ApiResponse >( new ApiResponse( "Uploaded " + length + " files", true ), HttpStatus.OK );
 
     }

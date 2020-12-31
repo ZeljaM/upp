@@ -7,37 +7,35 @@ import isEmpty from 'lodash/isEmpty';
 
 import { Container } from '../components/styledForm';
 import Registration from '../forms/DynamicallyRegistration';
-import NavBar from '../components/NavBar';
 import LeftBar from '../components/LeftBar';
 
 import { Post, Get } from '../services/api';
-import { REGISTRATION_START_URL, REGISTRATION_NEXT_URL } from '../constants/url';
+import { REGISTRATION_WRITER_START_URL, REGISTRATION_WRITER_NEXT_URL } from '../constants/url';
 import { responseOk } from '../utils/responseOk';
-
-// import { withNoAuth } from '../hoc/withNoAuth';
+import { withNoAuth } from '../hoc/withNoAuth';
 
 const startProcessRegistration = async ({ api }) => {
   try {
-    const response = await Get(REGISTRATION_START_URL);
+    const response = await Get(REGISTRATION_WRITER_START_URL);
 
     if (responseOk(response)) {
       const result = await response.json();
       api.success({
         placement: 'topRight',
-        message: 'Registration fetch fields success'
+        message: 'Writer registration fetch fields success'
       });
       return result;
     }
   } catch (error) {
     api.error({
       placement: 'topRight',
-      message: 'Registration fetch fields failes'
+      message: 'Writer registration fetch fields failes'
     });
   }
   return {};
 };
 
-const RegistrationContainer = () => {
+const WriterRegistrationContainer = () => {
   const [api, context] = notification.useNotification();
   const [responseData, setResponseData] = React.useState({});
   const [fields, setFields] = React.useState(get(data, 'fields', []));
@@ -57,7 +55,7 @@ const RegistrationContainer = () => {
     if(values.genresBeta) values = {...values, genresBeta: values.genresBeta.join(';')}
 
     console.log(values);
-    const response = await Post(REGISTRATION_NEXT_URL, {formKey: responseData.formDataKey, task: responseData.task, process: responseData.process, fields: values});
+    const response = await Post(REGISTRATION_WRITER_NEXT_URL, {formKey: responseData.formDataKey, task: responseData.task, process: responseData.process, fields: values});
 
     if (responseOk(response)) {
       const result = await response.json();
@@ -97,10 +95,8 @@ const RegistrationContainer = () => {
 
   return <Container>{context}
             <Registration responseData={responseData} form={form} onFinish={onFinish} fields={fields} isLoading={isLoading} />
-            {/* <NavBar /> */}
             <LeftBar />
           </Container>;
 };
 
-// export default withNoAuth(RegistrationContainer);
-export default RegistrationContainer;
+export default withNoAuth(WriterRegistrationContainer);

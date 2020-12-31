@@ -28,5 +28,4 @@ public class PostFormRequest implements Serializable
 
     private Map< String, String > fields = new HashMap<>();
 
-
 }

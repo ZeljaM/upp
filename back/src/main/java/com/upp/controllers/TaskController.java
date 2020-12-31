@@ -8,6 +8,7 @@ import java.util.List;
 import com.upp.configuration.UrlStorage;
 import com.upp.dtos.ApiResponse;
 import com.upp.dtos.FormFields;
+import com.upp.dtos.PostFormRequest;
 import com.upp.dtos.TaskInfo;
 import com.upp.models.Role;
 import com.upp.models.RoleName;
@@ -27,9 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -74,21 +75,30 @@ public class TaskController
 
 
     @GetMapping( "/form" )
-    public ResponseEntity< ? > form( @RequestParam final String process, @RequestParam String task )
+    public ResponseEntity< ? > form( @RequestBody PostFormRequest form )
     {
         try
         {
 
-            TaskFormData taskFormData = this.formService.getTaskFormData( task );
+            TaskFormData taskFormData = this.formService.getTaskFormData( form.getTask() );
             String formKey = taskFormData.getFormKey();
             List< FormField > formFields = taskFormData.getFormFields();
+            String url = UrlStorage.HOST;
+            if ( taskFormData.getFormKey().equals( "files" ) )
+            {
+                url += UrlStorage.FILES;
+            }
+            else
+            {
+                url += UrlStorage.TASK;
+            }
 
-            FormFields returnFormFields = new FormFields( task, process, formFields, new HashMap<>(), formKey, UrlStorage.HOST );
+            FormFields returnFormFields = new FormFields( form.getTask(), form.getProcess(), formFields, new HashMap<>(), formKey, url );
             return new ResponseEntity<>( returnFormFields, HttpStatus.OK );
         }
         catch ( Exception e )
         {
-            return new ResponseEntity< ApiResponse >( new ApiResponse( "Cant find task with id [ " + task + " ]", false ), HttpStatus.BAD_REQUEST );
+            return new ResponseEntity< ApiResponse >( new ApiResponse( "Cant find task with id [ " + form.getTask() + " ]", false ), HttpStatus.BAD_REQUEST );
         }
 
     }

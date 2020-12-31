@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import org.camunda.bpm.engine.form.FormField;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import lombok.AllArgsConstructor;
@@ -28,6 +29,8 @@ public class FormFields
     private HashMap< String, String > errors;
 
     private String url;
+
+    private MultipartFile files;
 
     public FormFields( String task, String process, List< FormField > fields, HashMap< String, String > errors, String key, String url )
     {

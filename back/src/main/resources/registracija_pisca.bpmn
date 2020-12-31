@@ -39,7 +39,7 @@
         <camunda:formData>
           <camunda:formField id="files" label="Files" type="customfile">
             <camunda:properties>
-              <camunda:property id="MIN" value="2" />
+              <camunda:property id="min" value="2" />
             </camunda:properties>
           </camunda:formField>
         </camunda:formData>

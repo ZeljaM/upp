@@ -21,4 +21,6 @@ public class TaskInfo
 
     private Date createdAt;
 
+    public String url;
+
 }

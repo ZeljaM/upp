@@ -150,11 +150,13 @@ public class WriterRegistrationController
 
     @PostMapping( "/files" )
     public ResponseEntity< ApiResponse > upload( @RequestParam( "files" ) final MultipartFile[] files,
-            @RequestHeader( required = true, value = "Authorization" ) final String token, @RequestParam final String task )
+            @RequestHeader( required = true, value = "Authorization" ) final String token, @RequestParam final String task, @RequestParam final String process )
     {
         Task singleResult = this.taskService.createTaskQuery().taskDefinitionKey( task ).singleResult();
         final Map< String, Object > map = new HashMap< String, Object >();
 
+        int length = files.length;
+        this.runtimeService.setVariable( process, "filesLength", length );
         Integer index = 1;
 
         for ( MultipartFile mf : files )
@@ -164,7 +166,7 @@ public class WriterRegistrationController
 
         this.formService.submitTaskForm( task, map );
 
-        return null;
+        return new ResponseEntity< ApiResponse >( new ApiResponse( "Uploaded " + length + " files", true ), HttpStatus.OK );
 
     }
 

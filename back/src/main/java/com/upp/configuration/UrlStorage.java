@@ -7,7 +7,11 @@ public class UrlStorage
 
     public static final String EDITOR = "api/editor/";
 
+    public static final String FILES = "register/writer/files";
+
     public static final String LECTOR = "api/lector/";
+
+    public static final String TASK = "api/task/";
 
     public static final String BOOK = "api/book/";
 

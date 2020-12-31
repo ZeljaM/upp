@@ -3,27 +3,29 @@ import 'antd/dist/antd.css';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Registration from './pages/Registration';
-import TaskCard from './pages/TaskCard';
+import ReaderRegistration from './pages/ReaderRegistration';
+import WriterRegistration from './pages/WriterRegistration';
+import TasksTable from './pages/TasksTable';
 
 
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
 const App = () => {
-  /** `collapsed` side of the menu */
-  const [collapsed, updateCollapsed] = React.useState(false);
 
   return (
       <Router>
         <Switch>
           <Route path="/tasks">
-            <TaskCard />
+            <TasksTable />
           </Route>
           <Route path="/login">
             <Login />
           </Route>
-          <Route path="/registration">
-            <Registration />
+          <Route path="/reader/registration">
+            <ReaderRegistration />
+          </Route>
+          <Route path="/writer/registration">
+            <WriterRegistration />
           </Route>
           <Route path="/">
             <Home />

@@ -2,7 +2,6 @@ import React from 'react';
 import { Container } from '../components/styledForm';
 import { Carousel, Card, Button } from 'antd';
 import styled from 'styled-components';
-import NavBar from '../components/NavBar';
 import LeftBar from '../components/LeftBar';
 
 const contentStyle = {
@@ -12,7 +11,6 @@ const contentStyle = {
   textAlign: 'center',
   background: '#364d79',
 };
-const { Meta } = Card;
 
 const CardWrapper = styled.div`
   .ant-card-body {
@@ -62,7 +60,6 @@ const TaskCard = () => {
             </ButtonWrapper>
         </Card>
       </CardWrapper>
-      {/* <NavBar /> */}
       <LeftBar />
     </Container>
   );

@@ -13,7 +13,8 @@ const layout = {
   },
 };
 
-const Login = ({ onFinish = () => { }, form }) => {
+const Login = ({ onFinish = () => { }, form, isLoading }) => {
+  console.log(isLoading);
   return (
     <FormContainer>
       <h2 className="title">Login</h2>
@@ -52,7 +53,7 @@ const Login = ({ onFinish = () => { }, form }) => {
           <Input.Password />
         </Form.Item>
 
-        <Button type="primary" block htmlType="submit" className="form-button">
+        <Button type="primary" block htmlType="submit" className="form-button" loading={isLoading}>
           Login
         </Button>
         <div className="register-text">If you not have an account</div>

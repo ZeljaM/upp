@@ -14,6 +14,10 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  .ant-table {
+    width: 85vw;
+  }
 `;
 
 export const FormContainer = styled.div`

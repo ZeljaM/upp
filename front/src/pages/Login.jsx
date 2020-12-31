@@ -4,18 +4,18 @@ import { useHistory } from 'react-router-dom';
 
 import { Container } from '../components/styledForm';
 import Login from '../forms/login';
-import NavBar from '../components/NavBar';
 import LeftBar from '../components/LeftBar';
 
 import { Post } from '../services/api';
 import { LOGIN_URL } from '../constants/url';
 import { responseOk } from '../utils/responseOk';
-
-// import { withNoAuth } from '../hoc/withNoAuth';
+import { withNoAuth } from '../hoc/withNoAuth';
 
 
 const LoginContainer = () => {
   const [api, context] = notification.useNotification();
+
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const [form] = Form.useForm();
 
@@ -24,6 +24,7 @@ const LoginContainer = () => {
   console.log('logg')
 
   const onFinish = async values => {
+    setIsLoading(true);
     console.log(values)
     const response = await Post(LOGIN_URL, values);
 
@@ -37,6 +38,7 @@ const LoginContainer = () => {
       setTimeout(() => {
         history.push('/');
       }, 1000)
+      setIsLoading(false);
       return;
     }
 
@@ -44,14 +46,14 @@ const LoginContainer = () => {
       placement: 'topRight',
       message: 'Invalid credentials'
     })
+    setIsLoading(false);
+    return;
   };
 
   return <Container>{context}
-            <Login form={form} onFinish={onFinish} />
-            {/* <NavBar /> */}
+            <Login form={form} onFinish={onFinish} isLoading={isLoading} />
             <LeftBar />
           </Container>;
 };
 
-// export default withNoAuth(LoginContainer);
-export default LoginContainer;
+export default withNoAuth(LoginContainer);

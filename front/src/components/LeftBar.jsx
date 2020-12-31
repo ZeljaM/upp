@@ -15,9 +15,11 @@ class LeftBar extends React.PureComponent {
                         <div>
                             <ul>
                               {localStorage.getItem('access_token') === null ? <li><a href="/login">Login</a></li> : null}
-                              {localStorage.getItem('access_token') === null ? <li><a href="/registration">Registration</a></li> : null}
+                              {localStorage.getItem('access_token') === null ? <li><a href="/reader/registration">Reader registration</a></li> : null}
+                              {localStorage.getItem('access_token') === null ? <li><a href="/writer/registration">Writer registration</a></li> : null}
                               {localStorage.getItem('access_token') !== null ? <li><a href="/login" onClick={() => localStorage.clear()}>Logout</a></li> : null}
-                              <li><a href="/tasks">Tasks</a></li>
+                              {localStorage.getItem('access_token') !== null ? <li><a href="/tasks" >Tasks for me</a></li> : null}
+                              {localStorage.getItem('access_token') !== null ? <li><a href="/tasks" >Start task</a></li> : null}
                             </ul>
                         </div>
                     </div>

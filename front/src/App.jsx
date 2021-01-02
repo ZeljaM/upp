@@ -1,6 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 
+import { Container } from './components/styledForm';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import ReaderRegistration from './pages/ReaderRegistration';
@@ -13,6 +14,7 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 const App = () => {
 
   return (
+    <Container>
       <Router>
         <Switch>
           <Route path="/tasks">
@@ -32,6 +34,7 @@ const App = () => {
           </Route>
         </Switch>
       </Router>
+    </Container>
   );
 };
 

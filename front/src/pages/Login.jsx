@@ -1,8 +1,7 @@
 import React from 'react';
-import { Form, notification } from 'antd';
+import { Form, notification, Spin } from 'antd';
 import { useHistory } from 'react-router-dom';
 
-import { Container } from '../components/styledForm';
 import Login from '../forms/login';
 import LeftBar from '../components/LeftBar';
 
@@ -36,9 +35,8 @@ const LoginContainer = () => {
       });
       localStorage.setItem('access_token', result.accessToken);
       setTimeout(() => {
-        history.push('/');
+        history.push('/tasks');
       }, 1000)
-      setIsLoading(false);
       return;
     }
 
@@ -50,10 +48,10 @@ const LoginContainer = () => {
     return;
   };
 
-  return <Container>{context}
-            <Login form={form} onFinish={onFinish} isLoading={isLoading} />
+  return <>{context}
+            {isLoading ? <Spin size="large"/> : <Login form={form} onFinish={onFinish} isLoading={isLoading} />}
             <LeftBar />
-          </Container>;
+          </>;
 };
 
 export default withNoAuth(LoginContainer);

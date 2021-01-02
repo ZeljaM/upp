@@ -1,11 +1,10 @@
 import React from 'react';
-import { Form, notification } from 'antd';
+import { Form, notification, Spin } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { useAsync } from 'react-async';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 
-import { Container } from '../components/styledForm';
 import Registration from '../forms/DynamicallyRegistration';
 import LeftBar from '../components/LeftBar';
 
@@ -39,6 +38,7 @@ const WriterRegistrationContainer = () => {
   const [api, context] = notification.useNotification();
   const [responseData, setResponseData] = React.useState({});
   const [fields, setFields] = React.useState(get(data, 'fields', []));
+  const [loading, setLoading] = React.useState(false);
 
   const [form] = Form.useForm();
 
@@ -51,6 +51,7 @@ const WriterRegistrationContainer = () => {
   });
 
   const onFinish = async values => {
+    setLoading(true);
     if(values.genres) values = {...values, genres: values.genres.join(';')}
     if(values.genresBeta) values = {...values, genresBeta: values.genresBeta.join(';')}
 
@@ -67,6 +68,7 @@ const WriterRegistrationContainer = () => {
           placement: 'topRight',
           message: 'Wrongly entered values'
         })
+        setLoading(false);
         return;
       } 
       if (result.success) {
@@ -75,7 +77,8 @@ const WriterRegistrationContainer = () => {
           message: result.message
         });
         setResponseData({});
-        history.push("/");
+        history.push("/login");
+        setLoading(false);
         return;
       }
       setResponseData(result);
@@ -84,6 +87,7 @@ const WriterRegistrationContainer = () => {
         placement: 'topRight',
         message: 'The second step of registering a beta reader'
       });
+      setLoading(false);
       return;
     }
 
@@ -91,12 +95,14 @@ const WriterRegistrationContainer = () => {
       placement: 'topRight',
       message: 'Registration error'
     })
+    setLoading(false);
+    return;
   };
 
-  return <Container>{context}
-            <Registration responseData={responseData} form={form} onFinish={onFinish} fields={fields} isLoading={isLoading} />
+  return <>{context}
+            {loading ? <Spin size='large' /> : <Registration responseData={responseData} form={form} onFinish={onFinish} fields={fields} isLoading={isLoading} /> }
             <LeftBar />
-          </Container>;
+          </>;
 };
 
 export default withNoAuth(WriterRegistrationContainer);

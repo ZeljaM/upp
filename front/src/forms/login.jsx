@@ -14,7 +14,6 @@ const layout = {
 };
 
 const Login = ({ onFinish = () => { }, form, isLoading }) => {
-  console.log(isLoading);
   return (
     <FormContainer>
       <h2 className="title">Login</h2>

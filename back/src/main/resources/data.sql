@@ -47,19 +47,42 @@ VALUES
 INSERT IGNORE `model_user`
 (`id`,`active`,`beta`,`city`,`country`,`email`,`first_name`,`last_name`,`password`,`username`)
 VALUES
-(3,True,False,'Novi Sad','Srbija','editor1@mailinator.com','editor2','editor2','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','editor2');
+(3,True,False,'Novi Sad','Srbija','editor2@mailinator.com','editor2','editor2','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','editor2');
 
 INSERT IGNORE INTO `model_user_roles`
 (`user_id`,`role_id`)
 VALUES
 (3,4);
 
+
 INSERT IGNORE `model_user`
 (`id`,`active`,`beta`,`city`,`country`,`email`,`first_name`,`last_name`,`password`,`username`)
 VALUES
-(4,True,False,'Novi Sad','Srbija','lektor@mailinator.com','lektor','lektor','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','lektor');
+(4,True,False,'Novi Sad','Srbija','editor3@mailinator.com','editor3','editor3','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','editor3');
 
 INSERT IGNORE INTO `model_user_roles`
 (`user_id`,`role_id`)
 VALUES
-(4,6);
+(4,4);
+
+
+INSERT IGNORE `model_user`
+(`id`,`active`,`beta`,`city`,`country`,`email`,`first_name`,`last_name`,`password`,`username`)
+VALUES
+(5,True,False,'Novi Sad','Srbija','editor4@mailinator.com','editor4','editor4','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','editor4');
+
+INSERT IGNORE INTO `model_user_roles`
+(`user_id`,`role_id`)
+VALUES
+(5,4);
+
+
+INSERT IGNORE `model_user`
+(`id`,`active`,`beta`,`city`,`country`,`email`,`first_name`,`last_name`,`password`,`username`)
+VALUES
+(6,True,False,'Novi Sad','Srbija','lektor@mailinator.com','lektor','lektor','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','lektor');
+
+INSERT IGNORE INTO `model_user_roles`
+(`user_id`,`role_id`)
+VALUES
+(6,6);

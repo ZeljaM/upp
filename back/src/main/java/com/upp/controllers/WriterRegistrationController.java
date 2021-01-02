@@ -1,5 +1,6 @@
 package com.upp.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +73,10 @@ public class WriterRegistrationController
         this.runtimeService.setVariable( instance.getId(), "notifyCount", 0 );
         this.runtimeService.setVariable( instance.getId(), "voteCount", 0 );
         this.runtimeService.setVariable( instance.getId(), "moreFiles", false );
+        this.runtimeService.setVariable( instance.getId(), "voteAgain", false );
         this.runtimeService.setVariable( instance.getId(), "rejected", false );
+
+        this.runtimeService.setVariable( instance.getId(), "votes", new ArrayList< String >() );
 
         List< User > findByRolesName = this.iUserRepository.findByRolesName( RoleName.ROLE_EDITOR );
 

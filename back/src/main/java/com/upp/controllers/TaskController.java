@@ -160,6 +160,18 @@ public class TaskController
 
         map.putAll( form.getFields() );
 
+        if ( form.getFields().containsKey( "vote" ) )
+        {
+            List< String > votes = ( List< String > ) this.runtimeService.getVariable( form.getProcess(), "votes" );
+
+            String string = form.getFields().get( "vote" );
+            votes.add( string );
+
+            this.runtimeService.removeVariable( form.getProcess(), "votes" );
+            this.runtimeService.setVariable( form.getProcess(), "votes", votes );
+
+        }
+
         this.formService.submitTaskForm( form.getTask(), map );
 
         return new ResponseEntity< ApiResponse >( new ApiResponse( "Finished task", true ), HttpStatus.OK );

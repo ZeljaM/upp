@@ -1,5 +1,4 @@
 import React from 'react';
-import { Container } from '../components/styledForm';
 import { Carousel, Card, Button } from 'antd';
 import styled from 'styled-components';
 import LeftBar from '../components/LeftBar';
@@ -29,7 +28,7 @@ const ButtonWrapper = styled.div`
 const TaskCard = () => {
   console.log("Udjes")
   return (
-    <Container>
+    <>
       <CardWrapper>
         <Card
           hoverable
@@ -61,7 +60,7 @@ const TaskCard = () => {
         </Card>
       </CardWrapper>
       <LeftBar />
-    </Container>
+    </>
   );
 }
 

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Form, Input, Button, Checkbox, Select, Spin } from 'antd';
+import { Form, Input, Button, Checkbox, Select, Spin, message, Upload } from 'antd';
 import isEmpty from 'lodash/isEmpty';
+import { UploadOutlined } from '@ant-design/icons';
 
 import { FormContainer } from '../components/styledForm';
 
@@ -24,16 +25,6 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
     ])
   }
 
-  // const multiSelect = (name, value) => {
-  //   console.log('values', value)
-  //   console.log(form);
-  //   form.setFields([
-  //     {
-  //       name,
-  //       value: value.join(';')
-  //     },
-  //   ])
-  // }
   
   React.useEffect(() => {
     console.log('responseData', responseData);
@@ -54,6 +45,24 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
     ])
   });
 
+  const props = {
+    name: 'file',
+    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    headers: {
+      authorization: 'authorization-text',
+    },
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
   return (
     isLoading ? <Spin size="large"/> :
     <FormContainer>
@@ -72,7 +81,7 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
             <Form.Item 
             label={field.label} 
             name={field.id}
-            rules={!field.defaultValue ? [
+            rules={!field.defaultValue && field.typeName !== "customfile" ? [
               {
                 required: 'required' in field.properties,
                 message: `Please input ${field.id}`,
@@ -97,7 +106,12 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
                       {value}
                     </Select.Option>
                   ))}  
-                </Select> : <Input />}
+                </Select> : 
+                field.typeName === "customfile" ? 
+                <Upload {...props}>
+                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                </Upload> : 
+                <Input />}
             </Form.Item>
           );
         })}

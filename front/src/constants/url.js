@@ -11,6 +11,8 @@ export const REGISTRATION_NEXT_URL = `${REGISTRATION_URL}/task`
 export const REGISTRATION_WRITER_URL =  `${BASE_URL}/register/writer`
 export const REGISTRATION_WRITER_START_URL = `${REGISTRATION_WRITER_URL}/process`
 export const REGISTRATION_WRITER_NEXT_URL = `${REGISTRATION_WRITER_URL}/task`
+export const REGISTRATION_WRITER_UPLOAD_FILES_URL = `${REGISTRATION_WRITER_URL}/files`
+
 
 // Tasks
 export const TASK_URL =  `${BASE_URL}/api/task`

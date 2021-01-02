@@ -3,11 +3,22 @@ const headers = {
   'Content-Type': 'application/json;charset=utf-8',
 };
 
+const headers01 = {
+  Accept: '*/*',
+  'Content-Type': 'multipart/form-data',
+};
+
 /** `helper` method for resolving headers */
 const resolveHeaders = (authToken) =>
   authToken
     ? { ...headers, Authorization: `Bearer ${authToken}` }
     : { ...headers };
+
+/** `helper` method for resolving headers */
+const resolveHeaders01 = (authToken) =>
+  authToken
+    ? { Authorization: `Bearer ${authToken}` }
+    : { ...headers01 };
 
 // Used for post, put, patch, get data
 const Get = (url, authToken = '', options = {}) =>
@@ -17,12 +28,21 @@ const Get = (url, authToken = '', options = {}) =>
     ...options,
   });
 
-const Post = (url, data = {}, authToken = '', options = {}) => {
+const Post = (url, data = {}, authToken = '', options = {}, multipart = false) => {
+  const resolve = multipart ? resolveHeaders01 : resolveHeaders;
   return fetch(url, {
     method: 'POST',
-    headers: resolveHeaders(authToken),
+    headers: resolve(authToken),
     body: JSON.stringify(data),
     ...options,
+  });
+};
+
+const PostFile = (url, data = {}, authToken = '') => {
+  return fetch(url, {
+    method: 'POST',
+    headers: resolveHeaders01(authToken),
+    body: data,
   });
 };
 
@@ -44,4 +64,4 @@ const Put = (url, data = {}, authToken = '', options = {}) => {
   });
 };
 
-export { Get, Post, Patch, Put };
+export { Get, Post, Patch, Put, PostFile };

@@ -96,6 +96,10 @@ public class TaskController
             {
                 url += UrlStorage.FILES;
             }
+            else if(taskFormData.getFormFields().equals("payMembership"))
+            {
+                url += UrlStorage.POST_WRITER;
+            }
             else
             {
                 url += UrlStorage.TASK;

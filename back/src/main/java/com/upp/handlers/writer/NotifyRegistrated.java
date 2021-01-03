@@ -12,6 +12,10 @@ public class NotifyRegistrated implements JavaDelegate
     public void execute( DelegateExecution execution ) throws Exception
     {
         // TODO Auto-generated method stub
+        System.err.println( "ok" );
+        System.err.println( "ok" );
+        System.err.println( "ok" );
+        System.err.println( "ok" );
 
     }
 

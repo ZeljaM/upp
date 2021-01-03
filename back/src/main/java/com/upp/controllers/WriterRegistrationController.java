@@ -78,6 +78,8 @@ public class WriterRegistrationController
 
         this.runtimeService.setVariable( instance.getId(), "votes", new ArrayList< String >() );
 
+        this.runtimeService.setVariable( instance.getId(), "voteOpinions", new ArrayList< String >() );
+
         List< User > findByRolesName = this.iUserRepository.findByRolesName( RoleName.ROLE_EDITOR );
 
         List< String > collect = findByRolesName.stream().map( u -> u.getId().toString() ).collect( Collectors.toList() );

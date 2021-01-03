@@ -163,12 +163,18 @@ public class TaskController
         if ( form.getFields().containsKey( "vote" ) )
         {
             List< String > votes = ( List< String > ) this.runtimeService.getVariable( form.getProcess(), "votes" );
+            List< String > opinions = ( List< String > ) this.runtimeService.getVariable( form.getProcess(), "voteOpinions" );
 
             String string = form.getFields().get( "vote" );
+            String opinion = form.getFields().get( "voteOpinion" );
             votes.add( string );
+            opinions.add( opinion );
 
             this.runtimeService.removeVariable( form.getProcess(), "votes" );
             this.runtimeService.setVariable( form.getProcess(), "votes", votes );
+
+            this.runtimeService.removeVariable( form.getProcess(), "voteOpinions" );
+            this.runtimeService.setVariable( form.getProcess(), "voteOpinions", opinions );
 
         }
 

@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import com.upp.services.EmailService;
+
+
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +21,9 @@ public class ProcessVoting implements JavaDelegate
     Integer negative = 0;
 
     Boolean again = false;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public void execute( DelegateExecution execution ) throws Exception
@@ -61,6 +68,13 @@ public class ProcessVoting implements JavaDelegate
 
             execution.removeVariable( "voteCount" );
             execution.setVariable( "voteCount", ++voteCount );
+
+            String email = ( String ) execution.getVariable( "email" );
+
+            List< String > opinions = ( List< String > ) execution.getVariable( "voteOpinions" );
+
+            this.emailService.sendMessage( email, "Upload files", "Upload files again " + opinions.toString() );
+
         }
         else if ( positive == size )
         {
@@ -96,6 +110,8 @@ public class ProcessVoting implements JavaDelegate
             execution.setVariable( "voteCount", ++voteCount );
 
         }
+
+        execution.setVariable( "voteOpinions", new ArrayList< String >() );
 
     }
 

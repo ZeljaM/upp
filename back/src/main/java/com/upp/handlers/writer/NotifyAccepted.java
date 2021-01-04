@@ -29,7 +29,7 @@ public class NotifyAccepted implements JavaDelegate
 
         String email = ( String ) execution.getVariable( "email" );
 
-        emailService.sendMessage( email, "Your registration has been accepted", "Your registration has been accepted!!!" );
+        emailService.sendMessage( email, "Your registration has been accepted", "Your registration has been accepted!!! Log in and pay!" );
 
     }
 

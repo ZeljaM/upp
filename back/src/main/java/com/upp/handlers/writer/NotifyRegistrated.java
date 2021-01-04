@@ -1,5 +1,8 @@
 package com.upp.handlers.writer;
 
+import java.util.HashSet;
+
+
 import com.upp.models.Role;
 import com.upp.models.RoleName;
 import com.upp.models.User;
@@ -31,6 +34,8 @@ public class NotifyRegistrated implements JavaDelegate
         User user = this.iUserRepository.findByEmail( email ).get();
 
         user.getRoles().clear();
+
+        user.setRoles( new HashSet< Role >() );
 
         Role role = this.iRoleRepository.findByName( RoleName.ROLE_WRITER ).get();
 

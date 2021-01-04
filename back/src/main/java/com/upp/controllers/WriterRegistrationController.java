@@ -112,6 +112,11 @@ public class WriterRegistrationController
 
         List< Task > tasks = this.taskService.createTaskQuery().processInstanceId( form.getProcess() ).list();
 
+        if ( tasks.size() == 0 )
+        {
+            return new ResponseEntity< ApiResponse >( new ApiResponse( "Process finished", true ), HttpStatus.OK );
+        }
+
         Task nextTask = tasks.get( 0 );
 
         TaskFormData taskFormData = this.formService.getTaskFormData( nextTask.getId() );

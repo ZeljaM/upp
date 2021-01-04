@@ -8,6 +8,7 @@ import com.upp.models.RoleName;
 import com.upp.models.User;
 import com.upp.repositories.IRoleRepository;
 import com.upp.repositories.IUserRepository;
+import com.upp.services.EmailService;
 
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -24,6 +25,9 @@ public class NotifyRegistrated implements JavaDelegate
 
     @Autowired
     private IRoleRepository iRoleRepository;
+
+    @Autowired
+    private EmailService EmailService;
 
     @Override
     public void execute( DelegateExecution execution ) throws Exception
@@ -42,6 +46,8 @@ public class NotifyRegistrated implements JavaDelegate
         user.getRoles().add( role );
 
         this.iUserRepository.save( user );
+
+        this.EmailService.sendMessage( user.getEmail(), "Payment successful", "You have completed your registration!!!" );
 
     }
 

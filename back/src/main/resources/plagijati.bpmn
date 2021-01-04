@@ -35,7 +35,7 @@
       <bpmn:outgoing>Flow_035u9l1</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_0oy6tyo" sourceRef="Activity_04bf9q1" targetRef="Activity_102dkzr" />
-    <bpmn:userTask id="Activity_04bf9q1" name="Select editors to review" camunda:assignee="${moderator}">
+    <bpmn:userTask id="Activity_04bf9q1" name="Select editors to review" camunda:formKey="selectEditorsFormKey" camunda:assignee="${moderator}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="selectedEditors" label="Select editors" type="string" defaultValue="${allEditors}">
@@ -55,13 +55,28 @@
       <bpmn:outgoing>Flow_0b6a1e2</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_0eiwlyr" sourceRef="Activity_1m60gfn" targetRef="Activity_1pcvl7y" />
-    <bpmn:userTask id="Activity_1m60gfn" name="Make comments" camunda:assignee="${oneUserToComment}">
+    <bpmn:userTask id="Activity_1m60gfn" name="Make comments" camunda:formKey="makeCommentForm" camunda:assignee="${oneUserToComment}">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="commentPlagiarism" label="Comment For Plagiarism" type="string">
+            <camunda:properties>
+              <camunda:property id="required" />
+              <camunda:property id="minlength" value="2" />
+            </camunda:properties>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0b6a1e2</bpmn:incoming>
       <bpmn:outgoing>Flow_0eiwlyr</bpmn:outgoing>
       <bpmn:multiInstanceLoopCharacteristics camunda:collection="${usersToComment}" camunda:elementVariable="oneUserToComment" />
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0mou2da" sourceRef="Activity_1pcvl7y" targetRef="Activity_13h32oo" />
-    <bpmn:userTask id="Activity_1pcvl7y" name="Board meeting voting" camunda:assignee="${oneUserToVote}">
+    <bpmn:userTask id="Activity_1pcvl7y" name="Board meeting voting" camunda:formKey="votePlagiarism" camunda:assignee="${oneUserToVote}">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="plagiarismVote" label="Plagiarism" type="boolean" />
+        </camunda:formData>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0eiwlyr</bpmn:incoming>
       <bpmn:outgoing>Flow_0mou2da</bpmn:outgoing>
       <bpmn:multiInstanceLoopCharacteristics camunda:collection="${usersToVote}" camunda:elementVariable="oneUserToVote" />
@@ -96,6 +111,10 @@
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="plagiarism">
+      <bpmndi:BPMNEdge id="Flow_09razkv_di" bpmnElement="Flow_09razkv">
+        <di:waypoint x="425" y="197" />
+        <di:waypoint x="480" y="197" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_15axs63_di" bpmnElement="Flow_15axs63">
         <di:waypoint x="1395" y="197" />
         <di:waypoint x="1570" y="197" />
@@ -145,12 +164,14 @@
         <di:waypoint x="188" y="197" />
         <di:waypoint x="230" y="197" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_09razkv_di" bpmnElement="Flow_09razkv">
-        <di:waypoint x="425" y="197" />
-        <di:waypoint x="480" y="197" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="179" width="36" height="36" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1886ytd_di" bpmnElement="Event_1886ytd">
         <dc:Bounds x="1832" y="179" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_00wnwb9_di" bpmnElement="Activity_0h7qh9v">
+        <dc:Bounds x="230" y="157" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0p2twl0_di" bpmnElement="Activity_0u7xw7i">
         <dc:Bounds x="480" y="157" width="100" height="80" />
@@ -175,12 +196,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0uf2jz4_di" bpmnElement="Activity_1htyoh1">
         <dc:Bounds x="1570" y="157" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="152" y="179" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_00wnwb9_di" bpmnElement="Activity_0h7qh9v">
-        <dc:Bounds x="230" y="157" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_04i12um_di" bpmnElement="Gateway_04i12um" isMarkerVisible="true">
         <dc:Bounds x="375" y="172" width="50" height="50" />

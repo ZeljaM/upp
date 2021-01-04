@@ -96,7 +96,7 @@ public class TaskController
             {
                 url += UrlStorage.FILES;
             }
-            else if(taskFormData.getFormFields().equals("payMembership"))
+            else if ( taskFormData.getFormFields().equals( "payMembership" ) )
             {
                 url += UrlStorage.POST_WRITER;
             }
@@ -112,6 +112,18 @@ public class TaskController
                 List< byte[] > collect = user.getBooks().stream().map( b -> b.getBook() ).collect( Collectors.toList() );
 
                 returnFormFields.setFiles( collect );
+            }
+            else if ( taskFormData.getFormKey().equals( "makeCommentForm" ) )
+            {
+                List< byte[] > collect = user.getBooks().stream().map( b -> b.getBook() ).collect( Collectors.toList() );
+                returnFormFields.setFiles( new ArrayList<>() );
+                returnFormFields.getFiles().addAll( collect );
+
+            }
+            else if ( taskFormData.getFormKey().equals( "votePlagiarism" ) )
+            {
+                ArrayList< String > comments = ( ArrayList< String > ) this.runtimeService.getVariable( form.getProcess(), "comments" );
+                returnFormFields.getComments().addAll( comments );
             }
 
             return new ResponseEntity<>( returnFormFields, HttpStatus.OK );
@@ -180,6 +192,25 @@ public class TaskController
             this.runtimeService.removeVariable( form.getProcess(), "voteOpinions" );
             this.runtimeService.setVariable( form.getProcess(), "voteOpinions", opinions );
 
+        }
+        else if ( form.getFields().containsKey( "commentPlagiarism" ) )
+        {
+
+            // TODO dodaj i podatke o editoru koji je napisao komentar
+            ArrayList< String > comments = ( ArrayList< String > ) this.runtimeService.getVariable( form.getProcess(), "comments" );
+
+            comments.add( form.getFields().get( "commentPlagiarism" ) );
+
+            this.runtimeService.removeVariable( form.getProcess(), "comments" );
+            this.runtimeService.setVariable( form.getProcess(), "comments", comments );
+        }
+        else if ( form.getFields().containsKey( "plagiarismVote" ) )
+        {
+            ArrayList< String > votes = ( ArrayList< String > ) this.runtimeService.getVariable( form.getProcess(), "votes" );
+            votes.add( form.getFields().get( "plagiarismVote" ) );
+
+            this.runtimeService.removeVariable( form.getProcess(), "votes" );
+            this.runtimeService.setVariable( form.getProcess(), "votes", votes );
         }
 
         this.formService.submitTaskForm( form.getTask(), map );

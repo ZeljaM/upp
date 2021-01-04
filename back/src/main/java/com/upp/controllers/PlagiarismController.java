@@ -65,6 +65,7 @@ public class PlagiarismController
         User moderator = findByRolesName.get( 0 );
 
         this.runtimeService.setVariable( instance.getId(), "comments", new ArrayList< String >() );
+        this.runtimeService.setVariable( instance.getId(), "votes", new ArrayList< String >() );
         this.runtimeService.setVariable( instance.getId(), "moderator", moderator.getId().toString() );
         this.runtimeService.setVariable( instance.getId(), "userId", id.toString() );
 

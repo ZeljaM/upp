@@ -37,7 +37,7 @@ public class SendNotificationToModerator implements JavaDelegate
 
         List< User > editors = this.iUserRepository.findByRolesName( RoleName.ROLE_EDITOR );
 
-        List< String > collect = editors.stream().map( e -> e.getId().toString() ).collect( Collectors.toList() );
+        String collect = editors.stream().map( e -> e.getUsername().toString() ).collect( Collectors.joining( ";" ) );
 
         execution.setVariable( "allEditors", collect );
 

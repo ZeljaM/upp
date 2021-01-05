@@ -23,6 +23,6 @@ public class UrlStorage
 
     public static final String POST_WRITER = "register/writer/task";
 
-    public static final String PLAGIARISM = "api/plagiarism";
+    public static final String PLAGIARISM = "api/plagiarism/process";
 
 }

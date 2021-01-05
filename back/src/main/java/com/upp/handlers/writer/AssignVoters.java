@@ -29,7 +29,6 @@ public class AssignVoters implements JavaDelegate
     @Override
     public void execute( DelegateExecution execution ) throws Exception
     {
-        // TODO Auto-generated method stub
         System.err.println( execution );
 
         List< User > editors = this.IUserRepository.findByRolesName( RoleName.ROLE_EDITOR );

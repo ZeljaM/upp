@@ -1,5 +1,11 @@
 package com.upp;
 
+import java.util.TimeZone;
+
+
+import javax.annotation.PostConstruct;
+
+
 import com.upp.security.JWTUtil;
 
 
@@ -17,6 +23,15 @@ public class Application
   public static void main( String[] args )
   {
     SpringApplication.run( Application.class );
+
+  }
+
+
+  @PostConstruct
+  public void init()
+  {
+    // Setting Spring Boot SetTimeZone
+    TimeZone.setDefault( TimeZone.getTimeZone( "UTC+1" ) );
 
   }
 

@@ -28,6 +28,11 @@ public class UpdateBook implements JavaDelegate
     {
         String userId = ( String ) execution.getVariable( "userId" );
 
+        String bookTitle = ( String ) execution.getVariable( "bookTitle" );
+        String writerName = ( String ) execution.getVariable( "writerName" );
+
+        String titleWriter = "Title: [ " + bookTitle + " ] Writer: [ " + writerName + " ]";
+
         Optional< User > findById = this.iUserRepository.findById( Long.parseLong( userId ) );
 
         if ( findById.isPresent() )
@@ -36,8 +41,8 @@ public class UpdateBook implements JavaDelegate
 
             Boolean plagiarism = ( Boolean ) execution.getVariable( "isPlagiarism" );
 
-            String message =
-                    plagiarism ? "Your appeal has been rejected! Your book is plagiarism!" : "You appeal has been accepted! Your book is not plagiarism!";
+            String message = plagiarism ? "Your appeal has been rejected! Your book " + titleWriter + " is plagiarism!"
+                    : "You appeal has been accepted! Your book " + titleWriter + " is not plagiarism!";
 
             this.emailService.sendMessage( user.getEmail(), message, message );
         }

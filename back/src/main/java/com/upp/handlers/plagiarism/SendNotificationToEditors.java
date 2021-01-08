@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import com.upp.models.RoleName;
 import com.upp.models.User;
 import com.upp.repositories.IUserRepository;
+import com.upp.services.EmailService;
 
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -22,6 +23,9 @@ public class SendNotificationToEditors implements JavaDelegate
 
     @Autowired
     private IUserRepository iUserRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public void execute( DelegateExecution execution ) throws Exception
@@ -39,10 +43,11 @@ public class SendNotificationToEditors implements JavaDelegate
             if ( findByEmail.isPresent() )
             {
                 list.add( findByEmail.get() );
+                this.emailService.sendMessage( findByEmail.get().getEmail(), "Make comments for plagiarism check",
+                        "Please log in and make comment for plagiarism check" );
             }
 
         }
-
         List< String > collect1 = list.stream().map( e -> e.getId().toString() ).collect( Collectors.toList() );
 
         execution.setVariable( "usersToComment", collect1 );

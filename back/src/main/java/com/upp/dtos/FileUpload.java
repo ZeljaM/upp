@@ -8,8 +8,9 @@ import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.engine.variable.value.FileValue;
 import org.camunda.bpm.engine.variable.value.TypedValue;
 
-public class FileUpload extends SimpleFormFieldType
+public class FileUpload extends SimpleFormFieldType 
 {
+
 
     @Override
     protected TypedValue convertValue( TypedValue propertyValue )

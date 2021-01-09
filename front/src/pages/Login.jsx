@@ -20,11 +20,8 @@ const LoginContainer = () => {
 
   const history = useHistory();
 
-  console.log('logg')
-
   const onFinish = async values => {
     setIsLoading(true);
-    console.log(values)
     const response = await Post(LOGIN_URL, values);
 
     if (responseOk(response)) {

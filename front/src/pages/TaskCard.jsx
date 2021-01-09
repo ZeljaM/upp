@@ -26,7 +26,6 @@ const ButtonWrapper = styled.div`
 `;
 
 const TaskCard = () => {
-  console.log("Udjes")
   return (
     <>
       <CardWrapper>

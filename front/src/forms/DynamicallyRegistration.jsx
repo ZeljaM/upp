@@ -1,7 +1,8 @@
 import React from 'react';
-import { Form, Input, Button, Checkbox, Select, Spin, message, Upload } from 'antd';
+import { Form, Input, Button, Checkbox, Select, Spin, message, Upload, Radio } from 'antd';
 import isEmpty from 'lodash/isEmpty';
 import { UploadOutlined } from '@ant-design/icons';
+import get from 'lodash/get';
 
 import { FormContainer } from '../components/styledForm';
 
@@ -14,9 +15,10 @@ const layout = {
   },
 };
 
-const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoading }) => {
+const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoading, files }) => {
+  const [value, setValue] = React.useState('');
+  
   const checkboxField = (value) => {
-    console.log(value);
     form.setFields([
       {
         name: 'beta',
@@ -27,7 +29,6 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
 
   
   React.useEffect(() => {
-    console.log('responseData', responseData);
     if(!isEmpty(responseData.errors))
       Object.keys(responseData.errors).map(key => (
         form.setFields([
@@ -53,7 +54,6 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
     },
     onChange(info) {
       if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
       }
       if (info.file.status === 'done') {
         message.success(`${info.file.name} file uploaded successfully`);
@@ -62,6 +62,10 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
       }
     },
   };
+
+  const onChange2 = e => {
+    setValue(e.target.value);
+  }
 
   return (
     isLoading ? <Spin size="large"/> :
@@ -76,6 +80,19 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
         onFinish={onFinish}
         form={form}
       >
+        {files && files.length &&
+          <Form.Item
+            className="hide-star"
+            label={"Download file"} 
+          >
+              <Select onChange={value => window.open("data:application/octet-stream;charset=utf-16le;base64,"+value.split('index')[0])}>
+                {files.map((file, index) => (
+                  <Select.Option value={file + "index" + index} key={file + index}>
+                    {"File" + index}
+                  </Select.Option>
+                ))}
+              </Select>
+          </Form.Item>}
         {fields.map(field => {
           return (
             <Form.Item 
@@ -108,10 +125,13 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
                   ))}  
                 </Select> : 
                 field.typeName === "customfile" ? 
-                <Upload {...props}>
+                <Upload {...props} accept="application/pdf">
                   <Button icon={<UploadOutlined />}>Click to Upload</Button>
                 </Upload> : 
-                <Input />}
+                   field.typeName === "enum" ? 
+                    <Radio.Group optionType="button" buttonStyle="solid" 
+                    options={Object.keys(field.type.values).map(value =>  ({label: value, value }))} onChange={onChange2} value={value} /> :
+                    <Input />}
             </Form.Item>
           );
         })}

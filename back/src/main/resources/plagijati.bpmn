@@ -12,13 +12,13 @@
     <bpmn:userTask id="Activity_0h7qh9v" name="Start complaint" camunda:formKey="startPlag">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="bookTitle" type="string">
+          <camunda:formField id="bookTitle" label="Book title" type="string">
             <camunda:properties>
               <camunda:property id="required" />
               <camunda:property id="minlength" value="2" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="writerName" type="string">
+          <camunda:formField id="writerName" label="Writer name" type="string">
             <camunda:properties>
               <camunda:property id="required" />
               <camunda:property id="minlength" value="2" />

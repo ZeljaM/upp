@@ -14,8 +14,8 @@ public class CountVotes implements JavaDelegate
     @Override
     public void execute( DelegateExecution execution ) throws Exception
     {
+        @SuppressWarnings( value = "unchecked" )
         ArrayList< String > votes = ( ArrayList< String > ) execution.getVariable( "votes" );
-        int size = votes.size();
 
         if ( votes.contains( "false" ) && votes.contains( "true" ) )
         {

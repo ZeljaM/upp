@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 import com.upp.configuration.UrlStorage;
@@ -12,7 +11,6 @@ import com.upp.dtos.ApiResponse;
 import com.upp.dtos.FormFields;
 import com.upp.dtos.PostFormRequest;
 import com.upp.models.Book;
-import com.upp.models.RoleName;
 import com.upp.models.User;
 import com.upp.repositories.IBookRepository;
 import com.upp.repositories.IUserRepository;
@@ -79,10 +77,6 @@ public class WriterRegistrationController
         this.runtimeService.setVariable( instance.getId(), "votes", new ArrayList< String >() );
 
         this.runtimeService.setVariable( instance.getId(), "voteOpinions", new ArrayList< String >() );
-
-        List< User > findByRolesName = this.iUserRepository.findByRolesName( RoleName.ROLE_EDITOR );
-
-        List< String > collect = findByRolesName.stream().map( u -> u.getId().toString() ).collect( Collectors.toList() );
 
         TaskFormData taskFormData = this.formService.getTaskFormData( firstTask.getId() );
         String formKey = taskFormData.getFormKey();
@@ -172,8 +166,6 @@ public class WriterRegistrationController
         Long extractId = this.jwtUtil.extractId( token );
 
         User user = this.iUserRepository.findById( extractId ).get();
-        Task singleResult = this.taskService.createTaskQuery().taskDefinitionKey( task ).singleResult();
-        final Map< String, Object > map = new HashMap< String, Object >();
 
         int length = files.length;
         this.runtimeService.setVariable( process, "filesMultiPart", files );

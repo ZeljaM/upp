@@ -12,6 +12,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@SuppressWarnings( "unchecked" )
 @Service
 public class ProcessVoting implements JavaDelegate
 {
@@ -87,7 +88,7 @@ public class ProcessVoting implements JavaDelegate
             execution.removeVariable( "moreFiles" );
             execution.setVariable( "moreFiles", false );
         }
-        else if ( negative == size )
+        else if ( negative >= size / 2 )
         {
             execution.removeVariable( "voteAgain" );
             execution.setVariable( "voteAgain", false );

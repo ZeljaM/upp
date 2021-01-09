@@ -1,6 +1,5 @@
 package com.upp.handlers;
 
-import com.upp.repositories.IUserRepository;
 import com.upp.services.EmailService;
 
 
@@ -16,16 +15,13 @@ public class CancelReaderRegistration implements JavaDelegate
     @Autowired
     EmailService EmailService;
 
-    @Autowired
-    private IUserRepository iUserService;
-
     @Override
     public void execute( DelegateExecution execution ) throws Exception
     {
 
-        System.err.println( "CANCEL" );
-
         String email = ( String ) execution.getVariable( "email" );
+
+        this.EmailService.sendMessage( email, "Your registration has run out of time", "Your registration has run out of time" );
 
     }
 

@@ -9,7 +9,6 @@ import com.upp.configuration.UrlStorage;
 import com.upp.dtos.FormFields;
 import com.upp.models.RoleName;
 import com.upp.models.User;
-import com.upp.repositories.IBookRepository;
 import com.upp.repositories.IUserRepository;
 import com.upp.security.JWTUtil;
 
@@ -49,8 +48,6 @@ public class PlagiarismController
     @Autowired
     private IUserRepository iUserRepository;
 
-    @Autowired
-    private IBookRepository iBookRepository;
 
     @GetMapping( "/process" )
     public ResponseEntity< FormFields > startProcess( @RequestHeader( required = true, value = "Authorization" ) final String token )

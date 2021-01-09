@@ -13,7 +13,8 @@ import { withAuth } from '../hoc/withAuth';
 import Registration from '../forms/DynamicallyRegistration';
 
 
-const getTasksOfUser = async ({ api, authToken }) => {
+const getTasksOfUser = async ({ api, authToken, setIsLoading }) => {
+  setIsLoading(true);
   try {
     const response = await Get(GET_TASKS_OF_USER, authToken);
 
@@ -38,6 +39,9 @@ const TasksTable = () => {
   const authToken = localStorage.getItem('access_token');
   const [api, context] = notification.useNotification();
   const [existForm, setExistForm] = React.useState(false);
+  const [files, setFiles] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const [responseData, setResponseData] = React.useState({});
   const [fields, setFields] = React.useState([]);
   const [task, setTask] = React.useState('');
@@ -45,10 +49,12 @@ const TasksTable = () => {
 
   const [form] = Form.useForm();
 
-  const { data = [], isLoading } = useAsync({
+  const { data = [] } = useAsync({
     promiseFn: getTasksOfUser,
     api,
     authToken,
+    setIsLoading,
+    onResolve: () => setIsLoading(false),
   });
   
   const dataSource = data.map((item, index) => {
@@ -92,12 +98,20 @@ const TasksTable = () => {
      const { task, process } = item;
      setTask(task);
      setProcess(process);
-    const response = await Post(FORM_FOR_TASK, {task, process}, authToken );
+     const response = await Post(FORM_FOR_TASK, {task, process}, authToken );
 
     if (responseOk(response)) {
       const result = await response.json();
       if(get(result, 'fields', []).length) {
         setExistForm(true);
+        console.log(result);
+        // window.open("data:application/octet-stream;charset=utf-16le;base64,"+result.files[0]);
+        // let pdfWindow = window.open("");
+        // pdfWindow.document.write(
+        // "<iframe width='100%' height='100%' src='data:application/pdf;base64, " +
+        // encodeURI(result.files[0]) + "'></iframe>"
+        // )
+        setFiles(get(result, 'files', []));
         setFields(get(result, 'fields', []));
         setResponseData(result);
         api.success({
@@ -116,6 +130,7 @@ const TasksTable = () => {
   }
 
   const onFinish = async (values) => {
+    setIsLoading(true);
     if(values.files.fileList.length >= 2) {
       const data = new FormData();
 
@@ -135,6 +150,7 @@ const TasksTable = () => {
           message: 'Files uploaded successfully'
         });
         window.location.reload();
+        setIsLoading(false);
         return;
       }
 
@@ -142,8 +158,10 @@ const TasksTable = () => {
         placement: 'topRight',
         message: 'Files upload failed '
       })
+      setIsLoading(false);
       return;
     }
+    setIsLoading(false);
     api.warning({
       placement: 'topRight',
       message: 'Must enter more then 2 files'
@@ -153,7 +171,7 @@ const TasksTable = () => {
   return <>{context}
             {isLoading ? <Spin size="large"/> :
             <>
-            {existForm ? <Registration responseData={responseData} form={form} onFinish={onFinish} fields={fields} isLoading={isLoading} />
+            {existForm ? <Registration files={files} responseData={responseData} form={form} onFinish={onFinish} fields={fields} isLoading={isLoading} />
                         : <Table columns={columns} dataSource={dataSource} onTaskClick={onTaskClick} />}
             <LeftBar />
             </>}

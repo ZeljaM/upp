@@ -58,8 +58,6 @@ public class BookController
     @Autowired
     private IUserRepository iUserRepository;
 
-    
-
     @Autowired
     private IGenreRepository iGenreRepository;
 
@@ -130,6 +128,8 @@ public class BookController
     public ResponseEntity< ApiResponse > upload( @RequestParam( "files" ) final MultipartFile[] files,
             @RequestHeader( required = true, value = "Authorization" ) final String token, @RequestParam final String task, @RequestParam final String process )
     {
+
+        // TODO currently working
 
         Long extractId = this.jwtUtil.extractId( token );
 

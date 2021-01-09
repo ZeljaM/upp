@@ -40,10 +40,11 @@ public class UpdateBook implements JavaDelegate
             User user = findById.get();
 
             Boolean plagiarism = ( Boolean ) execution.getVariable( "isPlagiarism" );
-
+            System.err.println( plagiarism );
             String message = plagiarism ? "Your appeal has been rejected! Your book " + titleWriter + " is plagiarism!"
                     : "You appeal has been accepted! Your book " + titleWriter + " is not plagiarism!";
-
+            System.err.println( message );
+            System.err.println( user.getEmail() );
             this.emailService.sendMessage( user.getEmail(), message, message );
         }
 

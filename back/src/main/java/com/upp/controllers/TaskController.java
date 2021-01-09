@@ -15,6 +15,7 @@ import com.upp.dtos.TaskInfo;
 import com.upp.models.Role;
 import com.upp.models.RoleName;
 import com.upp.models.User;
+import com.upp.repositories.IBookRepository;
 import com.upp.repositories.IRoleRepository;
 import com.upp.repositories.IUserRepository;
 import com.upp.security.JWTUtil;
@@ -43,6 +44,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class TaskController
 {
+
+    @Autowired
+    private IBookRepository iBookRepository;
 
     @Autowired
     JWTUtil jwtUtil;
@@ -97,7 +101,6 @@ public class TaskController
             String url = UrlStorage.HOST;
 
             ProcessInstance currentInstance = this.runtimeService.createProcessInstanceQuery().processInstanceId( form.getProcess() ).singleResult();
-            System.err.println( currentInstance.getId() );
 
             if ( taskFormData.getFormKey().equals( "files" ) )
             {
@@ -132,6 +135,7 @@ public class TaskController
                 ArrayList< String > comments = ( ArrayList< String > ) this.runtimeService.getVariable( form.getProcess(), "comments" );
                 returnFormFields.getComments().addAll( comments );
             }
+            
 
             return new ResponseEntity<>( returnFormFields, HttpStatus.OK );
         }

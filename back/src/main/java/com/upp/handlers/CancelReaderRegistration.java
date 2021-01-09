@@ -15,12 +15,9 @@ public class CancelReaderRegistration implements JavaDelegate
     @Autowired
     EmailService EmailService;
 
-
     @Override
     public void execute( DelegateExecution execution ) throws Exception
     {
-
-        System.err.println( "CANCEL" );
 
         String email = ( String ) execution.getVariable( "email" );
 

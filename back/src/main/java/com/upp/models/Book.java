@@ -1,6 +1,7 @@
 package com.upp.models;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -31,6 +32,13 @@ import lombok.NoArgsConstructor;
 { "isbn" } ) } )
 public class Book
 {
+
+    public Book( Map< String, String > map )
+    {
+        this.title = map.get( "title" );
+        this.synopsis = map.get( "synopsis" );
+
+    }
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )

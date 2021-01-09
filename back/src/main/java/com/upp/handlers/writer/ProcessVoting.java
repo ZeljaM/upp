@@ -88,7 +88,7 @@ public class ProcessVoting implements JavaDelegate
             execution.removeVariable( "moreFiles" );
             execution.setVariable( "moreFiles", false );
         }
-        else if ( negative == size )
+        else if ( negative >= size / 2 )
         {
             execution.removeVariable( "voteAgain" );
             execution.setVariable( "voteAgain", false );

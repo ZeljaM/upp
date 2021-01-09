@@ -75,7 +75,6 @@ public class ProcessVoting implements JavaDelegate
             List< String > opinions = ( List< String > ) execution.getVariable( "voteOpinions" );
 
             this.emailService.sendMessage( email, "Upload files", "Upload files again " + opinions.toString() );
-
         }
         else if ( positive == size )
         {

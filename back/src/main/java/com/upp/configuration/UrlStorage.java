@@ -27,4 +27,6 @@ public class UrlStorage
 
     public static final String BOOK_TASK = "/api/book/task";
 
+    public static final String BOOK_FILE = "/api/book/file";
+
 }

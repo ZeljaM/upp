@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_008vd86" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
-  <bpmn:process id="Process_0kh29gm" isExecutable="true">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_008vd86" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <bpmn:process id="plagiarism" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_1z0lj14</bpmn:outgoing>
     </bpmn:startEvent>
@@ -9,12 +9,28 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1z0lj14" sourceRef="StartEvent_1" targetRef="Activity_0h7qh9v" />
     <bpmn:sequenceFlow id="Flow_0zrt9c4" sourceRef="Activity_0h7qh9v" targetRef="Activity_0u7xw7i" />
-    <bpmn:userTask id="Activity_0h7qh9v" name="Start complaint">
+    <bpmn:userTask id="Activity_0h7qh9v" name="Start complaint" camunda:formKey="startPlag">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="bookTitle" type="string">
+            <camunda:properties>
+              <camunda:property id="required" />
+              <camunda:property id="minlength" value="2" />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="writerName" type="string">
+            <camunda:properties>
+              <camunda:property id="required" />
+              <camunda:property id="minlength" value="2" />
+            </camunda:properties>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1z0lj14</bpmn:incoming>
       <bpmn:outgoing>Flow_0zrt9c4</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_035u9l1" sourceRef="Activity_0u7xw7i" targetRef="Activity_04bf9q1" />
-    <bpmn:serviceTask id="Activity_0u7xw7i" name="Send notification to moderator">
+    <bpmn:serviceTask id="Activity_0u7xw7i" name="Send notification to moderator" camunda:class="com.upp.handlers.plagiarism.SendNotificationToModerator">
       <bpmn:incoming>Flow_0zrt9c4</bpmn:incoming>
       <bpmn:incoming>Flow_0fdg71x</bpmn:incoming>
       <bpmn:outgoing>Flow_035u9l1</bpmn:outgoing>
@@ -83,7 +99,7 @@
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0kh29gm">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="plagiarism">
       <bpmndi:BPMNEdge id="Flow_1quxmq3_di" bpmnElement="Flow_1quxmq3">
         <di:waypoint x="1530" y="450" />
         <di:waypoint x="1672" y="450" />

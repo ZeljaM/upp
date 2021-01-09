@@ -37,8 +37,6 @@ import org.springframework.web.client.RestTemplate;
 public class UserRegistrationController
 {
 
-    // TODO Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-
     @Autowired
     private TaskService taskService;
 

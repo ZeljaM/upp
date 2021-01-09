@@ -1,5 +1,6 @@
 package com.upp.dtos;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class FormFields
 
     private List< byte[] > files;
 
+    private List< String > comments;
+
     public FormFields( String task, String process, List< FormField > fields, HashMap< String, String > errors, String key, String url )
     {
         this.task = task;
@@ -39,6 +42,7 @@ public class FormFields
         this.errors = errors;
         this.formDataKey = key;
         this.url = url;
+        comments = new ArrayList<>();
 
     }
 

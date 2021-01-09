@@ -1,8 +1,5 @@
 package com.upp.handlers.writer;
 
-import com.upp.models.Role;
-import com.upp.models.RoleName;
-import com.upp.models.User;
 import com.upp.repositories.IRoleRepository;
 import com.upp.repositories.IUserRepository;
 import com.upp.services.EmailService;
@@ -32,17 +29,7 @@ public class NotifyAccepted implements JavaDelegate
 
         String email = ( String ) execution.getVariable( "email" );
 
-        User user = this.iUserRepository.findByEmail( email ).get();
-
-        user.getRoles().clear();
-
-        Role role = this.iRoleRepository.findByName( RoleName.ROLE_WRITER ).get();
-
-        user.getRoles().add( role );
-
-        this.iUserRepository.save( user );
-
-        emailService.sendMessage( email, "Your registration has been accepted", "Your registration has been accepted!!!" );
+        emailService.sendMessage( email, "Your registration has been accepted", "Your registration has been accepted!!! Log in and pay!" );
 
     }
 

@@ -76,7 +76,7 @@
       <bpmn:outgoing>Flow_0scacet</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_0z8kfmx" sourceRef="Activity_1wnyizz" targetRef="Activity_0qq90xz" />
-    <bpmn:userTask id="Activity_1wnyizz" name="Upload file" camunda:formKey="uploadFileBookForm" camunda:assignee="${userId}">
+    <bpmn:userTask id="Activity_1wnyizz" name="Upload file for book publishing" camunda:formKey="uploadFileBookForm" camunda:assignee="${userId}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="files" label="Files" type="customfile">

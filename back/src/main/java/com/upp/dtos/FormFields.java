@@ -34,6 +34,7 @@ public class FormFields
 
     private List< String > comments;
 
+
     public FormFields( String task, String process, List< FormField > fields, HashMap< String, String > errors, String key, String url )
     {
         this.task = task;

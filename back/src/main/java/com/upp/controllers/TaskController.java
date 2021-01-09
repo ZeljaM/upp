@@ -28,7 +28,6 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.form.FormField;
 import org.camunda.bpm.engine.form.TaskFormData;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,9 +37,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping( "/api/task" )
@@ -105,8 +102,6 @@ public class TaskController
             List< FormField > formFields = taskFormData.getFormFields();
             String url = UrlStorage.HOST;
 
-            ProcessInstance currentInstance = this.runtimeService.createProcessInstanceQuery().processInstanceId( form.getProcess() ).singleResult();
-
             if ( taskFormData.getFormKey().equals( "files" ) )
             {
                 url += UrlStorage.FILES;
@@ -156,6 +151,25 @@ public class TaskController
                     String bookString = "Title: " + book.getTitle() + " Synopsis: " + book.getSynopsis() + " Genre: " + book.getGenre().getName();
                     returnFormFields.setComments( new ArrayList<>() );
                     returnFormFields.getComments().add( bookString );
+
+                }
+            }
+            else if ( taskFormData.getFormKey().equals( "plagiarismDecisionForm" ) )
+            {
+
+                String bookId = ( String ) this.runtimeService.getVariable( form.getProcess(), "bookId" );
+
+                Optional< Book > findById = this.iBookRepository.findById( Long.parseLong( bookId ) );
+                if ( findById.isPresent() )
+                {
+                    Book book = findById.get();
+
+                    String bookString = "Title: " + book.getTitle() + " Synopsis: " + book.getSynopsis() + " Genre: " + book.getGenre().getName();
+                    returnFormFields.setComments( new ArrayList<>() );
+                    returnFormFields.getComments().add( bookString );
+
+                    returnFormFields.setFiles( new ArrayList<>() );
+                    returnFormFields.getFiles().add( book.getBook() );
                 }
             }
 
@@ -248,35 +262,6 @@ public class TaskController
         this.formService.submitTaskForm( form.getTask(), map );
 
         return new ResponseEntity< ApiResponse >( new ApiResponse( "Finished task", true ), HttpStatus.OK );
-
-    }
-
-
-    @PostMapping( "/files" )
-    public ResponseEntity< ApiResponse > upload( @RequestParam( "files" ) final MultipartFile file,
-            @RequestHeader( required = true, value = "Authorization" ) final String token, @RequestParam final String task, @RequestParam final String process )
-    {
-
-        try
-        {
-
-            Long extractId = this.jwtUtil.extractId( token );
-
-            User user = this.iUserRepository.findById( extractId ).get();
-
-            String bookId = ( String ) this.runtimeService.getVariable( process, "bookId" );
-
-            Book book = this.iBookRepository.findById( Long.parseLong( bookId ) ).get();
-
-            book.setBook( file.getBytes() );
-
-            return null;
-        }
-        catch ( Exception e )
-        {
-            System.err.println( e );
-            return new ResponseEntity< ApiResponse >( new ApiResponse( "Error", false ), HttpStatus.BAD_REQUEST );
-        }
 
     }
 

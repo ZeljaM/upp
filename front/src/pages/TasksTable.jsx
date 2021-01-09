@@ -129,7 +129,7 @@ const TasksTable = () => {
     console.log(values);
 
     if (!get(values, 'files', '')) {
-      const response = await Post(url, {...values, task, process}, authToken );
+      const response = await Post(url, {fields: values, task, process}, authToken );
 
       if (responseOk(response)) {
         const result = await response.json();
@@ -140,7 +140,8 @@ const TasksTable = () => {
           message: 'Fetch form success'
         });
       }
-      setIsLoading(false);
+      setExistForm(false);
+      window.location.reload();
       return;
     }
 
@@ -161,7 +162,8 @@ const TasksTable = () => {
           message: 'Files uploaded successfully'
         });
         window.location.reload();
-        setIsLoading(false);
+        setExistForm(false);
+        window.location.reload();
         return;
       }
 
@@ -169,10 +171,12 @@ const TasksTable = () => {
         placement: 'topRight',
         message: 'Files upload failed '
       })
-      setIsLoading(false);
+      setExistForm(false);
+      window.location.reload();
       return;
     }
-    setIsLoading(false);
+    setExistForm(false);
+    window.location.reload();
     api.warning({
       placement: 'topRight',
       message: 'Must enter more then 2 files'

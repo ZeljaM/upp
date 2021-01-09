@@ -172,6 +172,19 @@ public class TaskController
                     returnFormFields.getFiles().add( book.getBook() );
                 }
             }
+            else if ( taskFormData.getFormKey().equals( "betaCommentsForm" ) )
+            {
+                String bookId = ( String ) this.runtimeService.getVariable( form.getProcess(), "bookId" );
+
+                Optional< Book > findById = this.iBookRepository.findById( Long.parseLong( bookId ) );
+                if ( findById.isPresent() )
+                {
+                    Book book = findById.get();
+
+                    returnFormFields.setFiles( new ArrayList<>() );
+                    returnFormFields.getFiles().add( book.getBook() );
+                }
+            }
 
             return new ResponseEntity<>( returnFormFields, HttpStatus.OK );
         }
@@ -257,6 +270,16 @@ public class TaskController
 
             this.runtimeService.removeVariable( form.getProcess(), "votes" );
             this.runtimeService.setVariable( form.getProcess(), "votes", votes );
+        }
+        else if ( form.getFields().containsKey( "commentBetaReader" ) )
+        {
+            ArrayList< String > list = ( ArrayList< String > ) this.runtimeService.getVariable( form.getProcess(), "betaComments" );
+
+            list.add( form.getFields().get( "commentBetaReader" ) );
+
+            this.runtimeService.removeVariable( form.getProcess(), "betaComments" );
+            this.runtimeService.setVariable( form.getProcess(), "betaComments", list );
+
         }
 
         this.formService.submitTaskForm( form.getTask(), map );

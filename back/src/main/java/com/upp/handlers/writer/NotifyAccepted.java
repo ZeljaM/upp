@@ -1,7 +1,5 @@
 package com.upp.handlers.writer;
 
-import com.upp.repositories.IRoleRepository;
-import com.upp.repositories.IUserRepository;
 import com.upp.services.EmailService;
 
 
@@ -17,11 +15,7 @@ public class NotifyAccepted implements JavaDelegate
     @Autowired
     private EmailService emailService;
 
-    @Autowired
-    private IUserRepository iUserRepository;
-
-    @Autowired
-    private IRoleRepository iRoleRepository;
+    
 
     @Override
     public void execute( DelegateExecution execution ) throws Exception

@@ -13,7 +13,7 @@ public class UrlStorage
 
     public static final String TASK = "api/task/";
 
-    public static final String BOOK = "api/book/";
+    public static final String BOOK = "api/book/process";
 
     public static final String VERIFY_READER = "register/user/verify/";
 
@@ -24,5 +24,7 @@ public class UrlStorage
     public static final String POST_WRITER = "register/writer/task";
 
     public static final String PLAGIARISM = "api/plagiarism/process";
+
+    public static final String BOOK_TASK = "/api/book/task";
 
 }

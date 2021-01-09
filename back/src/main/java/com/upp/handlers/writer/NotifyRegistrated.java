@@ -32,7 +32,6 @@ public class NotifyRegistrated implements JavaDelegate
     @Override
     public void execute( DelegateExecution execution ) throws Exception
     {
-        // FIXME fix this
         String email = ( String ) execution.getVariable( "email" );
 
         User user = this.iUserRepository.findByEmail( email ).get();

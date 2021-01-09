@@ -15,6 +15,7 @@ import com.upp.dtos.TaskInfo;
 import com.upp.models.Role;
 import com.upp.models.RoleName;
 import com.upp.models.User;
+import com.upp.repositories.IBookRepository;
 import com.upp.repositories.IRoleRepository;
 import com.upp.repositories.IUserRepository;
 import com.upp.security.JWTUtil;
@@ -25,6 +26,7 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.form.FormField;
 import org.camunda.bpm.engine.form.TaskFormData;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,8 +40,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping( "/api/task" )
+@SuppressWarnings( value = "unchecked" )
+
 public class TaskController
 {
+
+    @Autowired
+    private IBookRepository iBookRepository;
 
     @Autowired
     JWTUtil jwtUtil;
@@ -92,11 +99,14 @@ public class TaskController
             String formKey = taskFormData.getFormKey();
             List< FormField > formFields = taskFormData.getFormFields();
             String url = UrlStorage.HOST;
+
+            ProcessInstance currentInstance = this.runtimeService.createProcessInstanceQuery().processInstanceId( form.getProcess() ).singleResult();
+
             if ( taskFormData.getFormKey().equals( "files" ) )
             {
                 url += UrlStorage.FILES;
             }
-            else if ( taskFormData.getFormFields().equals( "payMembership" ) )
+            else if ( taskFormData.getFormKey().equals( "payMembership" ) )
             {
                 url += UrlStorage.POST_WRITER;
             }
@@ -125,6 +135,7 @@ public class TaskController
                 ArrayList< String > comments = ( ArrayList< String > ) this.runtimeService.getVariable( form.getProcess(), "comments" );
                 returnFormFields.getComments().addAll( comments );
             }
+            
 
             return new ResponseEntity<>( returnFormFields, HttpStatus.OK );
         }
@@ -196,7 +207,6 @@ public class TaskController
         else if ( form.getFields().containsKey( "commentPlagiarism" ) )
         {
 
-            // TODO dodaj i podatke o editoru koji je napisao komentar
             ArrayList< String > comments = ( ArrayList< String > ) this.runtimeService.getVariable( form.getProcess(), "comments" );
 
             comments.add( form.getFields().get( "commentPlagiarism" ) );

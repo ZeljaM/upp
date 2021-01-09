@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -12,6 +13,7 @@ import com.upp.dtos.ApiResponse;
 import com.upp.dtos.FormFields;
 import com.upp.dtos.PostFormRequest;
 import com.upp.dtos.TaskInfo;
+import com.upp.models.Book;
 import com.upp.models.Role;
 import com.upp.models.RoleName;
 import com.upp.models.User;
@@ -36,7 +38,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping( "/api/task" )
@@ -44,9 +48,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class TaskController
 {
-
-    @Autowired
-    private IBookRepository iBookRepository;
 
     @Autowired
     JWTUtil jwtUtil;
@@ -65,6 +66,9 @@ public class TaskController
 
     @Autowired
     private IRoleRepository iRoleRepository;
+
+    @Autowired
+    private IBookRepository iBookRepository;
 
     @GetMapping( "/" )
     public ResponseEntity< ? > next( @RequestHeader( required = true, value = "Authorization" ) final String token )
@@ -96,6 +100,7 @@ public class TaskController
             User user = this.iUserRepository.findById( parseLong ).get();
 
             TaskFormData taskFormData = this.formService.getTaskFormData( form.getTask() );
+            System.err.println( taskFormData.getFormKey() );
             String formKey = taskFormData.getFormKey();
             List< FormField > formFields = taskFormData.getFormFields();
             String url = UrlStorage.HOST;
@@ -109,6 +114,10 @@ public class TaskController
             else if ( taskFormData.getFormKey().equals( "payMembership" ) )
             {
                 url += UrlStorage.POST_WRITER;
+            }
+            else if ( taskFormData.getFormKey().equals( "uploadFileBookForm" ) )
+            {
+                url += UrlStorage.BOOK_FILE;
             }
             else
             {
@@ -135,7 +144,20 @@ public class TaskController
                 ArrayList< String > comments = ( ArrayList< String > ) this.runtimeService.getVariable( form.getProcess(), "comments" );
                 returnFormFields.getComments().addAll( comments );
             }
-            
+            else if ( taskFormData.getFormKey().equals( "readOrRejectForm" ) )
+            {
+                String bookId = ( String ) this.runtimeService.getVariable( form.getProcess(), "bookId" );
+
+                Optional< Book > findById = this.iBookRepository.findById( Long.parseLong( bookId ) );
+                if ( findById.isPresent() )
+                {
+                    Book book = findById.get();
+
+                    String bookString = "Title: " + book.getTitle() + " Synopsis: " + book.getSynopsis() + " Genre: " + book.getGenre().getName();
+                    returnFormFields.setComments( new ArrayList<>() );
+                    returnFormFields.getComments().add( bookString );
+                }
+            }
 
             return new ResponseEntity<>( returnFormFields, HttpStatus.OK );
         }
@@ -168,7 +190,7 @@ public class TaskController
 
             tasks.add( publishBook );
 
-            appealPlagiarism.setTask( "Appeal against plagiarism" );
+            appealPlagiarism.setTitle( "Appeal against plagiarism" );
             appealPlagiarism.setUrl( UrlStorage.HOST + UrlStorage.PLAGIARISM );
 
             tasks.add( appealPlagiarism );
@@ -226,6 +248,35 @@ public class TaskController
         this.formService.submitTaskForm( form.getTask(), map );
 
         return new ResponseEntity< ApiResponse >( new ApiResponse( "Finished task", true ), HttpStatus.OK );
+
+    }
+
+
+    @PostMapping( "/files" )
+    public ResponseEntity< ApiResponse > upload( @RequestParam( "files" ) final MultipartFile file,
+            @RequestHeader( required = true, value = "Authorization" ) final String token, @RequestParam final String task, @RequestParam final String process )
+    {
+
+        try
+        {
+
+            Long extractId = this.jwtUtil.extractId( token );
+
+            User user = this.iUserRepository.findById( extractId ).get();
+
+            String bookId = ( String ) this.runtimeService.getVariable( process, "bookId" );
+
+            Book book = this.iBookRepository.findById( Long.parseLong( bookId ) ).get();
+
+            book.setBook( file.getBytes() );
+
+            return null;
+        }
+        catch ( Exception e )
+        {
+            System.err.println( e );
+            return new ResponseEntity< ApiResponse >( new ApiResponse( "Error", false ), HttpStatus.BAD_REQUEST );
+        }
 
     }
 

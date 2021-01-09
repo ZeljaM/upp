@@ -82,6 +82,8 @@
           <camunda:formField id="files" label="Files" type="customfile">
             <camunda:properties>
               <camunda:property id="required" />
+              <camunda:property id="min" value="1" />
+              <camunda:property id="max" value="1" />
             </camunda:properties>
           </camunda:formField>
         </camunda:formData>
@@ -163,6 +165,8 @@
           <camunda:formField id="fileModerator" label="Files" type="customfile">
             <camunda:properties>
               <camunda:property id="required" />
+              <camunda:property id="min" />
+              <camunda:property id="max" />
             </camunda:properties>
           </camunda:formField>
         </camunda:formData>
@@ -232,6 +236,8 @@
           <camunda:formField id="filesLector" label="File" type="customfile">
             <camunda:properties>
               <camunda:property id="required" />
+              <camunda:property id="min" />
+              <camunda:property id="max" />
             </camunda:properties>
           </camunda:formField>
         </camunda:formData>
@@ -282,6 +288,8 @@
           <camunda:formField id="file" label="File" type="customfile">
             <camunda:properties>
               <camunda:property id="required" />
+              <camunda:property id="min" />
+              <camunda:property id="max" />
             </camunda:properties>
           </camunda:formField>
         </camunda:formData>

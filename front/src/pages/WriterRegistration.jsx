@@ -55,12 +55,10 @@ const WriterRegistrationContainer = () => {
     if(values.genres) values = {...values, genres: values.genres.join(';')}
     if(values.genresBeta) values = {...values, genresBeta: values.genresBeta.join(';')}
 
-    console.log(values);
     const response = await Post(REGISTRATION_WRITER_NEXT_URL, {formKey: responseData.formDataKey, task: responseData.task, process: responseData.process, fields: values});
 
     if (responseOk(response)) {
       const result = await response.json();
-      console.log(result);
       if (!isEmpty(result.errors)) {
         setResponseData(result);
         setFields(get(result, 'fields', []));
@@ -69,6 +67,7 @@ const WriterRegistrationContainer = () => {
           message: 'Wrongly entered values'
         })
         setLoading(false);
+        location.reload();
         return;
       } 
       if (result.success) {

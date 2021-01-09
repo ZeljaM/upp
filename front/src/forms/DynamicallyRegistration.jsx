@@ -17,8 +17,8 @@ const layout = {
 
 const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoading, files }) => {
   const [value, setValue] = React.useState('');
+  
   const checkboxField = (value) => {
-    console.log(value);
     form.setFields([
       {
         name: 'beta',
@@ -29,7 +29,6 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
 
   
   React.useEffect(() => {
-    console.log('responseData', responseData);
     if(!isEmpty(responseData.errors))
       Object.keys(responseData.errors).map(key => (
         form.setFields([
@@ -55,7 +54,6 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
     },
     onChange(info) {
       if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
       }
       if (info.file.status === 'done') {
         message.success(`${info.file.name} file uploaded successfully`);
@@ -65,16 +63,7 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
     },
   };
 
-  const handlePreview = (file) => {
-    console.log('Your upload file:', file);
-    
-    window.open(file);
-} 
-
-console.log(files);
-
   const onChange2 = e => {
-    console.log('radio2 checked', e.target.value);
     setValue(e.target.value);
   }
 
@@ -94,7 +83,6 @@ console.log(files);
         {files && files.length &&
           <Form.Item
             className="hide-star"
-            name="sixDigitCode"
             label={"Download file"} 
           >
               <Select onChange={value => window.open("data:application/octet-stream;charset=utf-16le;base64,"+value.split('index')[0])}>
@@ -137,7 +125,7 @@ console.log(files);
                   ))}  
                 </Select> : 
                 field.typeName === "customfile" ? 
-                <Upload {...props} onPreview={handlePreview} accept="application/pdf">
+                <Upload {...props} accept="application/pdf">
                   <Button icon={<UploadOutlined />}>Click to Upload</Button>
                 </Upload> : 
                    field.typeName === "enum" ? 

@@ -102,7 +102,7 @@ VALUES
 INSERT IGNORE `model_user`
 (`id`,`active`,`beta`,`city`,`country`,`email`,`first_name`,`last_name`,`password`,`username`, `points`)
 VALUES
-(8,True,False,'Novi Sad','Srbija','reader3@mailinator.com','reader3','reader3','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','reader3', 0);
+(8,True,True,'Novi Sad','Srbija','reader3@mailinator.com','reader3','reader3','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','reader3', 0);
 
 INSERT IGNORE INTO `model_user_roles`
 (`user_id`,`role_id`)
@@ -118,7 +118,7 @@ VALUES
 INSERT IGNORE `model_user`
 (`id`,`active`,`beta`,`city`,`country`,`email`,`first_name`,`last_name`,`password`,`username`, `points`)
 VALUES
-(9,True,False,'Novi Sad','Srbija','reader2@mailinator.com','reader2','reader2','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','reader2', 0);
+(9,True,True,'Novi Sad','Srbija','reader2@mailinator.com','reader2','reader2','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','reader2', 0);
 
 INSERT IGNORE INTO `model_user_roles`
 (`user_id`,`role_id`)

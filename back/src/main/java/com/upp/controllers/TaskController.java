@@ -110,7 +110,8 @@ public class TaskController
             {
                 url += UrlStorage.POST_WRITER;
             }
-            else if ( taskFormData.getFormKey().equals( "uploadFileBookForm" ) )
+            else if ( taskFormData.getFormKey().equals( "uploadFileBookForm" ) || taskFormData.getFormKey().equals( "uploadFilesForModeratorForm" )
+                    || taskFormData.getFormKey().equals( "uploadFileLectorForm" ) || taskFormData.getFormKey().equals( "writerUploadsFileAgainModeratorForm" ) )
             {
                 url += UrlStorage.BOOK_FILE;
             }
@@ -172,7 +173,8 @@ public class TaskController
                     returnFormFields.getFiles().add( book.getBook() );
                 }
             }
-            else if ( taskFormData.getFormKey().equals( "betaCommentsForm" ) )
+            else if ( taskFormData.getFormKey().equals( "betaCommentsForm" ) || taskFormData.getFormKey().equals( "moderatorReviewFileForm" )
+                    || taskFormData.getFormKey().equals( "lectorReviewForm" ) || taskFormData.getFormKey().equals( "moderatorAgainReviewsForm" ) )
             {
                 String bookId = ( String ) this.runtimeService.getVariable( form.getProcess(), "bookId" );
 

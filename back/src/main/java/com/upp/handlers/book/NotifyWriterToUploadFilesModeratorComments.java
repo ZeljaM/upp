@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NotifyWriterToUploadFiles implements JavaDelegate
+public class NotifyWriterToUploadFilesModeratorComments implements JavaDelegate
 {
 
     @Autowired
@@ -28,13 +28,17 @@ public class NotifyWriterToUploadFiles implements JavaDelegate
     @Override
     public void execute( DelegateExecution execution ) throws Exception
     {
+
+        String comment = ( String ) execution.getVariable( "moderatorComment" );
+
         String userId = ( String ) execution.getVariable( "userId" );
         String bookId = ( String ) execution.getVariable( "bookId" );
 
         Book book = this.IBookRepository.findById( Long.parseLong( bookId ) ).get();
         User user = this.iUserRepository.findById( Long.parseLong( userId ) ).get();
 
-        this.EmailService.sendMessage( user.getEmail(), "Upload revision of file", "Upload revision of file for book [ " + book.getTitle() + " ]" );
+        this.EmailService.sendMessage( user.getEmail(), "Upload revision of file",
+                "Upload revision of file for book [ " + book.getTitle() + " ]; Comment is: " + comment );
 
     }
 

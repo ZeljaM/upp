@@ -136,6 +136,7 @@ public class BookController
 
         try
         {
+            Task singleResult = this.taskService.createTaskQuery().taskId( task ).singleResult();
 
             String bookId = ( String ) this.runtimeService.getVariable( process, "bookId" );
 
@@ -147,8 +148,10 @@ public class BookController
 
             this.runtimeService.setVariable( process, "comments", new ArrayList< String >() );
             this.runtimeService.setVariable( process, "comment", "" );
-
-            this.formService.submitTaskForm( task, null );
+            this.runtimeService.setVariable( process, "moderatorComment", "" );
+            this.runtimeService.setVariable( process, "lectorComment", "" );
+            this.runtimeService.setVariable( process, "moderatorsReview", "" );
+            this.taskService.complete( task );
 
             return new ResponseEntity< ApiResponse >( new ApiResponse( "Finished task", true ), HttpStatus.OK );
         }

@@ -15,13 +15,17 @@ const layout = {
   },
 };
 
-const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoading, files }) => {
+const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoading, files, comments, displayComments }) => {
   const [value, setValue] = React.useState('');
   
   const checkboxField = (value) => {
     form.setFields([
       {
         name: 'beta',
+        value: String(value),
+      },
+      {
+        name: 'plagiarismVote',
         value: String(value),
       },
     ])
@@ -41,6 +45,10 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
     form.setFields([
       {
         name: 'beta',
+        value: 'false',
+      },
+      {
+        name: 'plagiarismVote',
         value: 'false',
       },
     ])
@@ -80,7 +88,7 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
         onFinish={onFinish}
         form={form}
       >
-        {files && files.length &&
+        {files && files.length && 
           <Form.Item
             className="hide-star"
             label={"Download file"} 
@@ -95,44 +103,47 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
           </Form.Item>}
         {fields.map(field => {
           return (
-            <Form.Item 
-            label={field.label} 
-            name={field.id}
-            rules={!field.defaultValue && field.typeName !== "customfile" ? [
-              {
-                required: 'required' in field.properties,
-                message: `Please input ${field.id}`,
-              },
-              {
-                min: parseInt(field.properties.minlength || field.properties.min),
-                message: `Enter more than ${field.properties.minlength || field.properties.min}`,
-              },
-              {
-                max: parseInt(field.properties.maxlength || field.properties.max),
-                message: `Enter less than ${field.properties.maxlength || field.properties.max}`,
-              },
-              'email' in field.properties && {
-                type: 'email',
-              },
-            ] : null}
-            >
-              {'password' in field.properties ? <Input.Password /> : field.typeName === 'boolean' ? <Checkbox onChange={(e) => checkboxField(e.target.checked)}/> : field.defaultValue ? 
-                <Select mode="multiple" >
-                  {field.defaultValue.split(";").map(value => (
-                    <Select.Option value={value} key={value} >
-                      {value}
-                    </Select.Option>
-                  ))}  
-                </Select> : 
-                field.typeName === "customfile" ? 
-                <Upload {...props} accept="application/pdf">
-                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                </Upload> : 
-                   field.typeName === "enum" ? 
-                    <Radio.Group optionType="button" buttonStyle="solid" 
-                    options={Object.keys(field.type.values).map(value =>  ({label: value, value }))} onChange={onChange2} value={value} /> :
-                    <Input />}
-            </Form.Item>
+            <>
+              {!isEmpty(comments) && <p onClick={() => displayComments(true)} className="comments">View comments</p>}
+              <Form.Item 
+              label={field.label} 
+              name={field.id}
+              rules={!field.defaultValue && field.typeName !== "customfile" ? [
+                {
+                  required: 'required' in field.properties,
+                  message: `Please input ${field.id}`,
+                },
+                {
+                  min: parseInt(field.properties.minlength || field.properties.min),
+                  message: `Enter more than ${field.properties.minlength || field.properties.min}`,
+                },
+                {
+                  max: parseInt(field.properties.maxlength || field.properties.max),
+                  message: `Enter less than ${field.properties.maxlength || field.properties.max}`,
+                },
+                'email' in field.properties && {
+                  type: 'email',
+                },
+              ] : null}
+              >
+                {'password' in field.properties ? <Input.Password /> : field.typeName === 'boolean' ? <Checkbox onChange={(e) => checkboxField(e.target.checked)}/> : field.defaultValue ? 
+                  <Select mode="multiple" >
+                    {field.defaultValue.split(";").map(value => (
+                      <Select.Option value={value} key={value} >
+                        {value}
+                      </Select.Option>
+                    ))}  
+                  </Select> : 
+                  field.typeName === "customfile" ? 
+                  <Upload {...props} accept="application/pdf">
+                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                  </Upload> : 
+                    field.typeName === "enum" ? 
+                      <Radio.Group optionType="button" buttonStyle="solid" 
+                      options={Object.keys(field.type.values).map(value =>  ({label: value, value }))} onChange={onChange2} value={value} /> :
+                      <Input />}
+              </Form.Item>
+            </>
           );
         })}
         <Button type="primary" block htmlType="submit" className="form-button">

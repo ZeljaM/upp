@@ -11,6 +11,7 @@ import Table from '../components/Table';
 import { GET_TASKS_OF_USER, FORM_FOR_TASK, REGISTRATION_WRITER_UPLOAD_FILES_URL } from '../constants/url';
 import { withAuth } from '../hoc/withAuth';
 import Registration from '../forms/DynamicallyRegistration';
+import Comments from './Comments';
 
 
 const getTasksOfUser = async ({ api, authToken, setIsLoading }) => {
@@ -47,6 +48,11 @@ const TasksTable = () => {
   const [task, setTask] = React.useState('');
   const [process, setProcess] = React.useState('');
   const [url, setUrl] = React.useState('');
+
+  const [comments, setComments] = React.useState([]);
+  const [display, displayComments] = React.useState(false);
+
+
 
   const [form] = Form.useForm();
 
@@ -108,6 +114,7 @@ const TasksTable = () => {
         setFiles(get(result, 'files', []));
         setFields(get(result, 'fields', []));
         setResponseData(result);
+        setComments(get(result, 'comments', []));
         api.success({
           placement: 'topRight',
           message: 'Fetch form success'
@@ -124,11 +131,16 @@ const TasksTable = () => {
   }
 
   const onFinish = async (values) => {
-    setIsLoading(true);
+    console.log(values);
+    
+    if(values.selectedEditors) values = {...values, selectedEditors: values.selectedEditors.join(';')}
+    // if(values.selectedEditors === undefined) return;
+    setIsLoading(true); 
 
     console.log(values);
 
-    if (!get(values, 'files', '')) {
+    if (!get(values, 'files', '') && get(values, 'selectedEditors', '1;2').split(';').length >= 2) {
+      console.log('Usao', values);
       const response = await Post(url, {fields: values, task, process}, authToken );
 
       if (responseOk(response)) {
@@ -145,7 +157,7 @@ const TasksTable = () => {
       return;
     }
 
-    if(values.files.fileList.length >= 2) {
+    if(get(values, ['files', 'fileList'], []).length >= 2) {
       const data = new FormData();
 
       values.files.fileList.forEach(file => {
@@ -179,15 +191,15 @@ const TasksTable = () => {
     window.location.reload();
     api.warning({
       placement: 'topRight',
-      message: 'Must enter more then 2 files'
+      message: 'Must enter more then 2'
     })
   }
 
   return <>{context}
             {isLoading ? <Spin size="large"/> :
             <>
-            {existForm ? <Registration files={files} responseData={responseData} form={form} onFinish={onFinish} fields={fields} isLoading={isLoading} />
-                        : <Table columns={columns} dataSource={dataSource} onTaskClick={onTaskClick} />}
+            {!existForm ? <Table columns={columns} dataSource={dataSource} onTaskClick={onTaskClick} /> :
+                       display ? <Comments comments={comments} displayComments={displayComments} /> : <Registration files={files} responseData={responseData} form={form} onFinish={onFinish} fields={fields} isLoading={isLoading} displayComments={displayComments} comments={comments} />}
             <LeftBar />
             </>}
           </>;

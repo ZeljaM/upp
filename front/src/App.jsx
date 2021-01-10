@@ -7,6 +7,8 @@ import Login from './pages/Login';
 import ReaderRegistration from './pages/ReaderRegistration';
 import WriterRegistration from './pages/WriterRegistration';
 import TasksTable from './pages/TasksTable';
+import TaskCanBeStarted from './pages/TaskCanBeStarted';
+
 
 
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
@@ -19,6 +21,9 @@ const App = () => {
         <Switch>
           <Route path="/tasks">
             <TasksTable />
+          </Route>
+          <Route path="/tasksCanBeStarted">
+            <TaskCanBeStarted />
           </Route>
           <Route path="/login">
             <Login />

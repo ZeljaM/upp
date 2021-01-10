@@ -31,6 +31,8 @@ const LoginContainer = () => {
         message: 'Login success'
       });
       localStorage.setItem('access_token', result.accessToken);
+      localStorage.setItem('role', result.role);
+
       setTimeout(() => {
         history.push('/tasks');
       }, 1000)

@@ -20,4 +20,9 @@ export const GET_TASKS_OF_USER =  `${TASK_URL}/`
 export const FORM_FOR_TASK = `${TASK_URL}/form`
 
 
+// Tasks can be started
+export const TASK_CAN_BE_STARTED_URL =  `${BASE_URL}/api/task/start`
+
+
+
 

@@ -15,7 +15,7 @@ export const Container = styled.div`
 `;
 
 export const FormContainer = styled.div`
-  width: 350px;
+  width: 550px;
   border-radius: 15px;
   padding: 20px;
   background: #ffffff;
@@ -35,6 +35,16 @@ export const FormContainer = styled.div`
   .title {
     text-align: center;
     margin-bottom: 20px;
+  }
+
+  .comments {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .comments:hover {
+    text-align: center;
+    color: blue;
   }
 
   .register {

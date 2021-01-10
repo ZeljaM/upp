@@ -186,7 +186,7 @@
               <camunda:property id="minlength" value="2" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="moderatorOk" label="Procede" type="boolean">
+          <camunda:formField id="moderatorOk" label="File is valid" type="boolean">
             <camunda:properties>
               <camunda:property id="required" />
             </camunda:properties>
@@ -227,7 +227,7 @@
               <camunda:property id="minlength" value="2" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="lectorOk" label="Procede" type="boolean">
+          <camunda:formField id="lectorOk" label="File is valid" type="boolean">
             <camunda:properties>
               <camunda:property id="required" />
             </camunda:properties>
@@ -283,7 +283,7 @@
               <camunda:property id="minlength" value="2" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="moderatorRepeatOk" label="procede" type="boolean">
+          <camunda:formField id="moderatorRepeatOk" label="File is valid" type="boolean">
             <camunda:properties>
               <camunda:property id="required" />
             </camunda:properties>

@@ -1,6 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
-
 import './home.css';
 import LeftBar from '../components/LeftBar';
 

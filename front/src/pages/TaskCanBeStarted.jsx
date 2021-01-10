@@ -92,16 +92,17 @@ const TaskCanBeStarted = () => {
         setExistForm(true);
         setFiles(get(result, 'files', []));
         setFields(get(result, 'fields', []));
+        setTask(get(result, 'task', ''));
+        setProcess(get(result, 'process', ''));
         setResponseData(result);
+        setUrl(get(result, 'url', ''));
         api.success({
           placement: 'topRight',
           message: 'Fetch form success'
         });
         return;
       }
-      
     }
-
     api.error({
       placement: 'topRight',
       message: 'Fetch form field'
@@ -112,61 +113,26 @@ const TaskCanBeStarted = () => {
   const onFinish = async (values) => {
     setIsLoading(true);
 
+    console.log('Usaaaaao')
     console.log(values);
+    console.log(task);
+    console.log(process);
+    console.log(url);
 
-    if (!get(values, 'files', '')) {
-      const response = await Post(url, {fields: values, task, process}, authToken );
+    const response = await Post(url, {fields: values, task, process}, authToken );
 
-      if (responseOk(response)) {
-        const result = await response.json();
-        console.log('result', result);
-        window.location.reload();
-        api.success({
-          placement: 'topRight',
-          message: 'Fetch form success'
-        });
-      }
-      setExistForm(false);
+    if (responseOk(response)) {
+      const result = await response.json();
+      console.log('result', result);
       window.location.reload();
-      return;
-    }
-
-    if(values.files.fileList.length >= 2) {
-      const data = new FormData();
-
-      values.files.fileList.forEach(file => {
-        data.append('files', file.originFileObj, file.originFileObj.name);
-      });
-      data.append('task', task);
-      data.append('process', process);
-
-      const response = await PostFile(url, data, authToken );
-
-      if (responseOk(response)) {
-        api.success({
-          placement: 'topRight',
-          message: 'Files uploaded successfully'
-        });
-        window.location.reload();
-        setExistForm(false);
-        window.location.reload();
-        return;
-      }
-
-      api.error({
+      api.success({
         placement: 'topRight',
-        message: 'Files upload failed '
-      })
-      setExistForm(false);
-      window.location.reload();
-      return;
+        message: 'Fetch form success'
+      });
     }
-    setExistForm(false);
     window.location.reload();
-    api.warning({
-      placement: 'topRight',
-      message: 'Must enter more then 2 files'
-    })
+    return;
+  
   }
 
   return <>{context}

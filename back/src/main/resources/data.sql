@@ -55,15 +55,15 @@ VALUES
 (3,4);
 
 
--- INSERT IGNORE `model_user`
--- (`id`,`active`,`beta`,`city`,`country`,`email`,`first_name`,`last_name`,`password`,`username`)
--- VALUES
--- (4,True,False,'Novi Sad','Srbija','editor3@mailinator.com','editor3','editor3','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','editor3');
+INSERT IGNORE `model_user`
+(`id`,`active`,`beta`,`city`,`country`,`email`,`first_name`,`last_name`,`password`,`username`)
+VALUES
+(4,True,False,'Novi Sad','Srbija','editor3@mailinator.com','editor3','editor3','$2a$10$l0Hd.Pyjxy8AuvQRAfsd9u/2tJRF/uR1PIJSRd5VDx..ONoluLJxG','editor3');
 
--- INSERT IGNORE INTO `model_user_roles`
--- (`user_id`,`role_id`)
--- VALUES
--- (4,4);
+INSERT IGNORE INTO `model_user_roles`
+(`user_id`,`role_id`)
+VALUES
+(4,4);
 
 
 -- INSERT IGNORE `model_user`

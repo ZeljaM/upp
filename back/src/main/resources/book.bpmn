@@ -164,7 +164,7 @@
     <bpmn:userTask id="Activity_1l0ji1m" name="Upload updated version" camunda:formKey="uploadFilesForModeratorForm" camunda:assignee="${userId}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="fileModerator" label="Files" type="customfile">
+          <camunda:formField id="files" label="Files" type="customfile">
             <camunda:properties>
               <camunda:property id="required" />
               <camunda:property id="min" value="1" />
@@ -245,7 +245,7 @@
     <bpmn:userTask id="Activity_1qv3hlo" name="writer upload updated file" camunda:formKey="uploadFileLectorForm" camunda:assignee="${userId}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="filesLector" label="File" type="customfile">
+          <camunda:formField id="files" label="File" type="customfile">
             <camunda:properties>
               <camunda:property id="required" />
               <camunda:property id="min" value="1" />
@@ -302,7 +302,7 @@
     <bpmn:userTask id="Activity_1n35ecd" name="Writer uploads file" camunda:formKey="writerUploadsFileAgainModeratorForm" camunda:assignee="${userId}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="file" label="File" type="customfile">
+          <camunda:formField id="files" label="File" type="customfile">
             <camunda:properties>
               <camunda:property id="required" />
               <camunda:property id="min" value="1" />

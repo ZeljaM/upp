@@ -348,7 +348,7 @@
       <bpmn:userTask id="Activity_1h3h36w" name="BETA readers read and comments" camunda:formKey="betaCommentsForm" camunda:assignee="${oneReader}">
         <bpmn:extensionElements>
           <camunda:formData>
-            <camunda:formField id="commentBetaReader" label="Comment" type="boolean">
+            <camunda:formField id="commentBetaReader" label="Comment" type="string">
               <camunda:properties>
                 <camunda:property id="required" />
                 <camunda:property id="minlength" value="2" />

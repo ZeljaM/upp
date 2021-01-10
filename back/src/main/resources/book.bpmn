@@ -43,7 +43,7 @@
     <bpmn:userTask id="Activity_1j9mzbd" name="Read or reject" camunda:formKey="readOrRejectForm" camunda:assignee="${moderator}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="readReject" label="readReject" type="boolean">
+          <camunda:formField id="readReject" label="Read or Reject" type="boolean">
             <camunda:properties>
               <camunda:property id="required" />
             </camunda:properties>
@@ -186,7 +186,7 @@
               <camunda:property id="minlength" value="2" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="moderatorRepeat" label="Writer upload new file" type="boolean">
+          <camunda:formField id="moderatorOk" label="Procede" type="boolean">
             <camunda:properties>
               <camunda:property id="required" />
             </camunda:properties>
@@ -202,10 +202,10 @@
       <bpmn:outgoing>Flow_0gwtnln</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_1lznkil" sourceRef="Gateway_1tp1awr" targetRef="Gateway_0qcsirl">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">${moderatorRepeat} == false</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">${moderatorOk} == true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0gwtnln" name="need update" sourceRef="Gateway_1tp1awr" targetRef="Activity_0lcy9um">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">${moderatorRepeat} == true</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">${moderatorOk} != true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1gs53wf" sourceRef="Activity_0lcy9um" targetRef="Gateway_1kjmqtw" />
     <bpmn:serviceTask id="Activity_0lcy9um" name="Notify writter of moderators comments" camunda:class="com.upp.handlers.book.NotifyWriterToUploadFilesModeratorComments">
@@ -227,7 +227,7 @@
               <camunda:property id="minlength" value="2" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="lectorRepeat" label="Writer upload new file" type="boolean">
+          <camunda:formField id="lectorOk" label="Procede" type="boolean">
             <camunda:properties>
               <camunda:property id="required" />
             </camunda:properties>
@@ -263,10 +263,10 @@
       <bpmn:outgoing>Flow_1oiri2k</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_1dcouxw" sourceRef="Gateway_0d5ry7z" targetRef="Activity_1i34bgi">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">${lectorRepeat} == true</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">${lectorOk} != true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1oiri2k" sourceRef="Gateway_0d5ry7z" targetRef="Gateway_03x47nf">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">${lectorRepeat} == true</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">${lectorOk} == true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1r9llyr" sourceRef="Activity_1qv3hlo" targetRef="Gateway_0qcsirl" />
     <bpmn:serviceTask id="Activity_1td8qse" name="Notify moderator" camunda:class="com.upp.handlers.book.NotifyModeratorUpdate">
@@ -283,7 +283,7 @@
               <camunda:property id="minlength" value="2" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="moderatorRepeatSecond" label="Writer upload new file" type="boolean">
+          <camunda:formField id="moderatorRepeatOk" label="procede" type="boolean">
             <camunda:properties>
               <camunda:property id="required" />
             </camunda:properties>
@@ -321,10 +321,10 @@
       <bpmn:outgoing>Flow_1ogxgy6</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_06vo855" sourceRef="Gateway_0mzg55z" targetRef="Activity_1vo7j3c">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">${moderatorRepeatSecond} == true</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">${moderatorRepeatOk} == false</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1ogxgy6" sourceRef="Gateway_0mzg55z" targetRef="Activity_1anhr4l">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">${moderatorRepeatSecond} == false</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">${moderatorRepeatOk} == true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:serviceTask id="Activity_1anhr4l" name="Index and publish" camunda:class="com.upp.handlers.book.IndexAndPublish">
       <bpmn:incoming>Flow_1ogxgy6</bpmn:incoming>
@@ -697,6 +697,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1tp1awr_di" bpmnElement="Gateway_1tp1awr" isMarkerVisible="true">
         <dc:Bounds x="3675" y="342" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3655" y="399" width="90" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_19d6jbb_di" bpmnElement="Activity_0lcy9um">
         <dc:Bounds x="3390" y="210" width="100" height="80" />

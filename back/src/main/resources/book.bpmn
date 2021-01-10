@@ -19,6 +19,8 @@
             <camunda:properties>
               <camunda:property id="genres" />
               <camunda:property id="required" />
+              <camunda:property id="min" value="1" />
+              <camunda:property id="max" value="1" />
             </camunda:properties>
           </camunda:formField>
           <camunda:formField id="synopsis" label="synopsis" type="string">
@@ -175,7 +177,7 @@
       <bpmn:outgoing>Flow_0bhg8ej</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_1x74bti" sourceRef="Activity_0m3q4o4" targetRef="Gateway_1tp1awr" />
-    <bpmn:userTask id="Activity_0m3q4o4" name="Moderator review file" camunda:formKey="moderatorReviewFileForm" camunda:assignee="${userId}">
+    <bpmn:userTask id="Activity_0m3q4o4" name="Moderator review file" camunda:formKey="moderatorReviewFileForm" camunda:assignee="${moderator}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="moderatorComment" label="Comment" type="string">

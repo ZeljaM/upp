@@ -25,8 +25,8 @@ public class UrlStorage
 
     public static final String PLAGIARISM = "api/plagiarism/process";
 
-    public static final String BOOK_TASK = "/api/book/task";
+    public static final String BOOK_TASK = "api/book/task";
 
-    public static final String BOOK_FILE = "/api/book/file";
+    public static final String BOOK_FILE = "api/book/file";
 
 }

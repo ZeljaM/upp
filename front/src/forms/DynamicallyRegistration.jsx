@@ -28,6 +28,26 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
         name: 'plagiarismVote',
         value: String(value),
       },
+      {
+        name: 'readReject',
+        value: String(value),
+      },
+      {
+        name: 'plagiarism',
+        value: String(value),
+      },
+      {
+        name: 'moderatorOk',
+        value: String(value),
+      },
+      {
+        name: 'moderatorRepeatOk',
+        value: String(value),
+      },
+      {
+        name: 'lectorOk',
+        value: String(value),
+      },
     ])
   }
 
@@ -51,6 +71,30 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
         name: 'plagiarismVote',
         value: 'false',
       },
+      {
+        name: 'readReject',
+        value: 'false',
+      },
+      {
+        name: 'plagiarism',
+        value: 'false',
+      },
+      {
+        name: 'oneFile',
+        value: false,
+      },
+      {
+        name: 'moderatorOk',
+        value: 'false',
+      },
+      {
+        name: 'lectorOk',
+        value: 'false',
+      },
+      {
+        name: 'moderatorRepeatOk',
+        value: 'false',
+      },
     ])
   });
 
@@ -68,11 +112,22 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
       } else if (info.file.status === 'error') {
         message.error(`${info.file.name} file upload failed.`);
       }
+      console.log(info);
     },
   };
 
   const onChange2 = e => {
     setValue(e.target.value);
+  }
+
+  const onClickUpload = value => {
+    console.log(value);
+    form.setFields([
+      {
+        name: 'oneFile',
+        value: get(value, ['properties', 'min'], 0) === get(value, ['properties', 'max'], 1) ? true : false,
+      },
+    ])
   }
 
   return (
@@ -88,6 +143,7 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
         onFinish={onFinish}
         form={form}
       >
+        {!isEmpty(comments) && <p onClick={() => displayComments(true)} className="comments">View comments</p>}
         {files && files.length && 
           <Form.Item
             className="hide-star"
@@ -101,10 +157,15 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
                 ))}
               </Select>
           </Form.Item>}
+          <div style={{display: 'none'}}>
+            <Form.Item
+              className="hide-star"
+              name="oneFile" 
+            />
+          </div>
         {fields.map(field => {
           return (
             <>
-              {!isEmpty(comments) && <p onClick={() => displayComments(true)} className="comments">View comments</p>}
               <Form.Item 
               label={field.label} 
               name={field.id}
@@ -127,7 +188,7 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
               ] : null}
               >
                 {'password' in field.properties ? <Input.Password /> : field.typeName === 'boolean' ? <Checkbox onChange={(e) => checkboxField(e.target.checked)}/> : field.defaultValue ? 
-                  <Select mode="multiple" >
+                  <Select mode={get(field, ['properties', 'min'], 0) === get(field, ['properties', 'max'], 1) ? "single" : "multiple"} >
                     {field.defaultValue.split(";").map(value => (
                       <Select.Option value={value} key={value} >
                         {value}
@@ -135,12 +196,11 @@ const Registration = ({ onFinish = () => { }, form, fields, responseData, isLoad
                     ))}  
                   </Select> : 
                   field.typeName === "customfile" ? 
-                  <Upload {...props} accept="application/pdf">
+                  <Upload {...props} accept="application/pdf" onClick={() => onClickUpload(field)}>
                     <Button icon={<UploadOutlined />}>Click to Upload</Button>
                   </Upload> : 
                     field.typeName === "enum" ? 
-                      <Radio.Group optionType="button" buttonStyle="solid" 
-                      options={Object.keys(field.type.values).map(value =>  ({label: value, value }))} onChange={onChange2} value={value} /> :
+                      <Radio.Group optionType="button" buttonStyle="solid" options={Object.keys(field.type.values).map(value =>  ({label: value, value }))} onChange={onChange2} value={value} /> :
                       <Input />}
               </Form.Item>
             </>

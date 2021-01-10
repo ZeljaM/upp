@@ -132,9 +132,11 @@ const TasksTable = () => {
 
   const onFinish = async (values) => {
     console.log(values);
+    console.log(url);
     
-    if(values.selectedEditors) values = {...values, selectedEditors: values.selectedEditors.join(';')}
-    // if(values.selectedEditors === undefined) return;
+    if(values.selectedEditors) values = {...values, selectedEditors: values.selectedEditors.join(';')}    
+    if(values.betaReadersBook) values = {...values, betaReadersBook: values.betaReadersBook.join(';')}
+
     setIsLoading(true); 
 
     console.log(values);
@@ -157,11 +159,24 @@ const TasksTable = () => {
       return;
     }
 
-    if(get(values, ['files', 'fileList'], []).length >= 2) {
+    let valid;
+    let fileOrFiels;
+    if(get(values, 'oneFile', '')) {
+      valid = get(values, ['files', 'fileList'], []).length === 1 ? true : false;
+      fileOrFiels = 'file';
+    }
+
+    if(!get(values, 'oneFile', '')) {
+      valid = get(values, ['files', 'fileList'], []).length >= 2 ? true : false;
+      fileOrFiels = 'files';
+    }
+
+
+    if(valid) {
       const data = new FormData();
 
       values.files.fileList.forEach(file => {
-        data.append('files', file.originFileObj, file.originFileObj.name);
+        data.append(fileOrFiels, file.originFileObj, file.originFileObj.name);
       });
       data.append('task', task);
       data.append('process', process);
@@ -191,7 +206,7 @@ const TasksTable = () => {
     window.location.reload();
     api.warning({
       placement: 'topRight',
-      message: 'Must enter more then 2'
+      message: 'Invalid number of files'
     })
   }
 

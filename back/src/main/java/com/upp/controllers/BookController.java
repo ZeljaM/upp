@@ -11,9 +11,11 @@ import com.upp.configuration.UrlStorage;
 import com.upp.dtos.ApiResponse;
 import com.upp.dtos.FormFields;
 import com.upp.dtos.PostFormRequest;
+import com.upp.models.Book;
 import com.upp.models.Genre;
 import com.upp.models.RoleName;
 import com.upp.models.User;
+import com.upp.repositories.IBookRepository;
 import com.upp.repositories.IGenreRepository;
 import com.upp.repositories.IUserRepository;
 import com.upp.security.JWTUtil;
@@ -42,6 +44,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping( value = "/api/book" )
 public class BookController
 {
+
+    @Autowired
+    private IBookRepository iBookRepository;
 
     @Autowired
     JWTUtil jwtUtil;
@@ -124,18 +129,37 @@ public class BookController
     }
 
 
-    @PostMapping( "/files" )
-    public ResponseEntity< ApiResponse > upload( @RequestParam( "files" ) final MultipartFile[] files,
+    @PostMapping( "/file" )
+    public ResponseEntity< ApiResponse > upload( @RequestParam( "file" ) final MultipartFile file,
             @RequestHeader( required = true, value = "Authorization" ) final String token, @RequestParam final String task, @RequestParam final String process )
     {
 
-        // TODO currently working
+        try
+        {
+            Task singleResult = this.taskService.createTaskQuery().taskId( task ).singleResult();
 
-        Long extractId = this.jwtUtil.extractId( token );
+            String bookId = ( String ) this.runtimeService.getVariable( process, "bookId" );
 
-        User user = this.iUserRepository.findById( extractId ).get();
+            Book book = this.iBookRepository.findById( Long.parseLong( bookId ) ).get();
 
-        return null;
+            book.setBook( file.getBytes() );
+
+            this.iBookRepository.save( book );
+
+            this.runtimeService.setVariable( process, "comments", new ArrayList< String >() );
+            this.runtimeService.setVariable( process, "comment", "" );
+            this.runtimeService.setVariable( process, "moderatorComment", "" );
+            this.runtimeService.setVariable( process, "lectorComment", "" );
+            this.runtimeService.setVariable( process, "moderatorsReview", "" );
+            this.taskService.complete( task );
+
+            return new ResponseEntity< ApiResponse >( new ApiResponse( "Finished task", true ), HttpStatus.OK );
+        }
+        catch ( Exception e )
+        {
+            System.err.println( e );
+            return new ResponseEntity< ApiResponse >( new ApiResponse( "Error", false ), HttpStatus.BAD_REQUEST );
+        }
 
     }
 

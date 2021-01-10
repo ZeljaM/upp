@@ -58,6 +58,8 @@ public class User
 
     private Boolean beta;
 
+    private Short points = 0;
+
     @ManyToMany( fetch = FetchType.LAZY )
     @JoinTable( name = "model_user_genres", joinColumns = @JoinColumn( name = "user_id" ), inverseJoinColumns = @JoinColumn( name = "genre_id" ) )
     private Set< Genre > genres = new HashSet<>();

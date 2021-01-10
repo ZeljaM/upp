@@ -37,6 +37,7 @@ public class Book
     {
         this.title = map.get( "title" );
         this.synopsis = map.get( "synopsis" );
+        this.published = false;
 
     }
 
@@ -67,6 +68,8 @@ public class Book
 
     @Lob
     private byte[] book;
+
+    private Boolean published;
 
     @ManyToMany( fetch = FetchType.LAZY )
     @JoinTable( name = "model_book_editors", joinColumns = @JoinColumn( name = "book_id" ), inverseJoinColumns = @JoinColumn( name = "user_id" ) )
